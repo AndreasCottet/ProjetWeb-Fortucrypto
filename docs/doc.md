@@ -44,3 +44,5 @@ Page exchanges au détail :
 Si on a le time :
 - Faire un graphe de la crypto lors qu'on clique sur une crypto dans la liste.
 - Pouvoir faire des exchanges entre crypto
+
+Inspiration coincap.io
