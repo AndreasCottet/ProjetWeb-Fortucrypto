@@ -4,7 +4,7 @@
       <Menu />
       <div class="flex flex-col flex-1 w-full">
         <Header />
-        <HomeView />
+        <Accueil />
       </div>
     </div>
   </body>
@@ -14,7 +14,7 @@
 import { RouterLink, RouterView } from 'vue-router'
 import Menu from './components/Menu.vue'
 import Header from './components/Header.vue'
-import HomeView from './views/HomeView.vue'
+import Accueil from './views/Accueil.vue'
 </script>
 
 <style scoped></style>
