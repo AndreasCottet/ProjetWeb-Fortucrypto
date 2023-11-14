@@ -31,16 +31,19 @@ app.post('/register', async (req, res) => {
     }
 })
 
-app.post('/signin', (req, res) => {
-    const { username, password } = req.body
+app.post('/login', async (req, res) => {
+    const { username, hashedPassword: password } = req.body
+
     try {
-        User.findOne({
-            username: username,
-            password: password
-        })
-        res.status(200)
-    } catch (e) {
-        console.error(e)
+        const users = await User.findAll({ where: { username, password } });
+
+        if (users.length) {
+            res.status(200).send('Connexion réussie');
+        } else {
+            res.status(403).send('Connexion impossible');
+        }
+    } catch (err) {
+        return res.status(500).json({ message: err.message });
     }
 })
 

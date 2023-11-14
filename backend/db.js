@@ -4,18 +4,17 @@ import { Sequelize } from "sequelize";
 const sequelize = new Sequelize('sqlite:database-fortucrypto.db');
 
 export const User = sequelize.define('user', {
-    email: { type: Sequelize.STRING },
+    username: { type: Sequelize.STRING },
     password: { type: Sequelize.STRING },
 })
 
 export const Favorite = sequelize.define('favorite', {
-    cryptoId: { type: Sequelize.STRING },
+    cryptoSymbol: { type: Sequelize.STRING },
     user: { type: User},
 })
 
 export const Crypto = sequelize.define('crypto', {
-    cryptoId: { type: Sequelize.STRING },
-    user: { type: User }
+    cryptoSymbol: { type: Sequelize.STRING },
 })
 
 export async function InitializeDb() {
