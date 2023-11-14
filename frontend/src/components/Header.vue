@@ -22,18 +22,22 @@
                 clip-rule="evenodd"></path>
             </svg>
           </div>
-          <input
-            class="w-full pl-8 pr-2 text-sm text-gray-700 placeholder-gray-600 bg-gray-100 border-0 rounded-md dark:placeholder-gray-500 dark:focus:shadow-outline-gray dark:focus:placeholder-gray-600 dark:bg-gray-700 dark:text-gray-200 focus:placeholder-gray-500 focus:bg-white focus:border-purple-300 focus:outline-none focus:shadow-outline-purple form-input"
-            type="text" placeholder="Search for projects" aria-label="Search" />
+          <form>
+            <input ref="search"
+              class="w-full pl-8 pr-2 text-sm text-gray-700 placeholder-gray-600 bg-gray-100 border-0 rounded-md dark:placeholder-gray-500 dark:focus:shadow-outline-gray dark:focus:placeholder-gray-600 dark:bg-gray-700 dark:text-gray-200 focus:placeholder-gray-500 focus:bg-white focus:border-purple-300 focus:outline-none focus:shadow-outline-purple form-input"
+              type="text" placeholder="Search for projects" aria-label="Search" v-model="searchItem" />
+          </form>
         </div>
       </div>
+      <ul class="flex items-center flex-shrink-0 space-x-6">
 
-      <ul>
         <!-- Profile menu -->
         <li class="relative">
           <button class="align-middle rounded-full focus:shadow-outline-purple focus:outline-none"
             v-on:click="toggleProfileMenu" @keydown.escape="toggleProfileMenu" aria-label="Account" aria-haspopup="true">
-            <img class="object-cover w-8 h-8 rounded-full" src="" alt="" aria-hidden="true" />
+            <img class="object-cover w-8 h-8 rounded-full"
+              src=""
+              alt="" aria-hidden="true" />
           </button>
           <template v-if="isProfileMenuOpen">
             <ul x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100"
