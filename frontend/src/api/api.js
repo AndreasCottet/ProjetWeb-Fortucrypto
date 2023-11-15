@@ -10,3 +10,7 @@ export async function login(username, password) {
 export async function getCryptos() {
     return await axios.get(API_CRYPTO_URL + '/assets?limit=10')
 }
+
+export async function getExchanges() {
+    return await axios.get(API_CRYPTO_URL + '/exchanges?limit=10')
+}
