@@ -8,5 +8,5 @@ export async function login(username, password) {
 }
 
 export async function getCryptos() {
-    return await axios.get(API_CRYPTO_URL + '/assets', )
+    return await axios.get(API_CRYPTO_URL + '/assets?limit=10')
 }

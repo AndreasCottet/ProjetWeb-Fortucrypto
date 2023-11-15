@@ -12,9 +12,10 @@
       </div>
     </td>
     <td class="px-4 py-3 text-sm">{{ parseFloat(crypto.priceUsd).toFixed(2) }}€</td>
-    <td class="px-4 py-3 text-sm">{{ parseFloat(crypto.supply).toFixed(2) }}€</td>
-    <td class="px-4 py-3 text-sm">{{ parseFloat(crypto.vwap24Hr).toFixed(2) }}€</td>
-    <td class="px-4 py-3 text-sm">{{ parseFloat(crypto.volumeUsd24Hr).toFixed(2) }}€</td>
+    <td class="px-4 py-3 text-sm">{{ kFormatter(parseFloat(crypto.marketCapUsd).toFixed(2)) }}€</td>
+    <td class="px-4 py-3 text-sm">{{ kFormatter(parseFloat(crypto.vwap24Hr).toFixed(2)) }}€</td>
+    <td class="px-4 py-3 text-sm">{{ kFormatter(parseInt(crypto.supply)) }}</td>
+    <td class="px-4 py-3 text-sm">{{ kFormatter(parseFloat(crypto.volumeUsd24Hr).toFixed(2)) }}€</td>
     <td class="px-4 py-3 text-xs">
       <span
         class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100" v-if="parseFloat(crypto.changePercent24Hr) > 0">
@@ -42,6 +43,18 @@ console.log(crypto)
 const img = computed(() => {
   return 'https://assets.coincap.io/assets/icons/' + crypto.symbol.toLowerCase() + '@2x.png'
 })
+
+function kFormatter(num) {
+  if (num / 1000000000 > 1) {
+    return (num / 1000000000).toFixed(2) + 'B';
+  } else if (num / 1000000 > 1) {
+    return (num / 1000000).toFixed(2) + 'M';
+  } else if (num / 1000 > 1) {
+    return (num / 1000).toFixed(2) + 'K';
+  } else {
+    return num;
+  }
+}
 </script>
 
 <style></style>

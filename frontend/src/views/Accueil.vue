@@ -24,7 +24,7 @@ const cards = ref([
     color: "#1d3b8b",
   },
   {
-    name: "Echanges 24h",
+    name: "BTC Indice de dominance",
     value: "35",
     svg: "M17,6.009s2,4.01-1,4.01C12.838,10.019,13,3,15,2c0,0-7.655.767-9.57,7.673-.5-1.35-1.059-3.4-.43-4.666,0,0-3,2.005-3,7.017S4,22,12,22s10-4.965,10-8.974C22,7.012,17,6.009,17,6.009Z",
     color: "#f87215",
@@ -108,6 +108,7 @@ onMounted(async () => {
                 <th class="px-4 py-3">Prix</th>
                 <th class="px-4 py-3">Capitalisation</th>
                 <th class="px-4 py-3">VWAP</th>
+                <th class="px-4 py-3">Offre</th>
                 <th class="px-4 py-3">Volume (24h)</th>
                 <th class="px-4 py-3">Fluctuation (24h)</th>
               </tr>
