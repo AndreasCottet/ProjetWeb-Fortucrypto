@@ -31,6 +31,30 @@ const cards = ref([
   }
 ])
 
+// let cryptos = ref([
+//   {
+//     name: "Bitcoin",
+//     symbol: "BTC",
+//     priceUsd: "36000",
+//     supply: "10000",
+//     vwap24Hr: "10000",
+//     volumeUsd24Hr: "10000",
+//     typefluc: "positive",
+//     changePercent24Hr: "1,73",
+//   },
+//   {
+//     img: "https://assets.coincap.io/assets/icons/eth@2x.png",
+//     nom: "Ethereum",
+//     accronyme: "ETH",
+//     prix: "36000",
+//     capitalisation: "10000",
+//     vwap: "10000",
+//     volume: "10000",
+//     typefluc: "negative",
+//     fluctuation: "1,73",
+//   },
+// ]);
+
 const cryptos = ref([])
 
 onMounted(async () => {
