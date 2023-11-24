@@ -5,6 +5,7 @@ import Register from "../views/Register.vue";
 import Exchange from "../views/Exchange.vue";
 import Convertir from "../views/Convertir.vue";
 import Wallet from "../views/Wallet.vue";
+import Coin from "../views/Coin.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,6 +34,10 @@ const router = createRouter({
       path: '/wallet',
       name: 'Wallet',
       component: Wallet
+    }, {
+      path: '/coin/:id',
+      name: 'Coin',
+      component: Coin,
     }
   ]
 })

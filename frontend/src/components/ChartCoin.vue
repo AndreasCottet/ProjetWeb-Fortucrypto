@@ -1,0 +1,50 @@
+<template>
+  <Line :data="chartData" :options="chartOptions" />
+</template>
+
+<script lang="ts">
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js'
+
+import { Line } from 'vue-chartjs'
+
+const chartConfig = {
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+  }
+}
+
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
+
+
+export default {
+  name: 'ChartCoin',
+  components: {
+    Line
+  },
+  props: {
+    chartValues: {
+      type: Object,
+      required: true
+    }
+  },
+  computed: {
+    chartData() {
+      return {
+        labels: this.$props.chartValues.labels,
+        datasets: [
+          {
+            label: 'Prix (€)',
+            data: this.$props.chartValues.values,
+            fill: false,
+            borderColor: '#f87979'
+          }
+        ]
+      }
+    },
+    chartOptions() {
+      return chartConfig.options
+    }
+  }
+}
+</script>
