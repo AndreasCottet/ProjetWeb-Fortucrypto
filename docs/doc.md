@@ -43,6 +43,7 @@ Permet de répertorier les différentes cryptomonnaies.
 ### Si on a le time :
 - Faire un graphe de la crypto lors qu'on clique sur une crypto dans la liste.
 - Pouvoir faire des exchanges entre crypto
+- Sur le graphe si le prix a augmenté par rapport à la précédente valeur, mettre cette valeur en vert, sinon en rouge.
 
 
 Inspiration coincap.io

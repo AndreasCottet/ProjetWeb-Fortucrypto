@@ -4,6 +4,8 @@ import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 import Exchange from "../views/Exchange.vue";
 import Coin from "../views/Coin.vue";
+import Convertir from "../views/Convertir.vue";
+import Wallet from "../views/Wallet.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,6 +30,14 @@ const router = createRouter({
       path: '/coin/:id',
       name: 'Coin',
       component: Coin,
+    }, {
+      path: '/convertir',
+      name: 'convertir',
+      component: Convertir
+    }, {
+      path: '/wallet',
+      name: 'Wallet',
+      component: Wallet
     }
   ]
 })
