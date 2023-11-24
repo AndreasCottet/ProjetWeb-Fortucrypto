@@ -11,6 +11,14 @@ export async function getCryptos() {
     return await axios.get(API_CRYPTO_URL + '/assets?limit=10')
 }
 
+export async function getCrypto(id) {
+    return await axios.get(API_CRYPTO_URL + '/assets/' + id)
+}
+
+export async function getCryptoHistory(id, startTime, endTime) {
+    return await axios.get(API_CRYPTO_URL + '/assets/' + id + '/history?interval=h1' + '&start=' + startTime + '&end=' + endTime)
+}
+
 export async function getExchanges() {
     return await axios.get(API_CRYPTO_URL + '/exchanges?limit=10')
 }

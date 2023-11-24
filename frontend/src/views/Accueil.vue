@@ -60,7 +60,6 @@ const cryptos = ref([])
 onMounted(async () => {
   const res = await getCryptos()
   cryptos.value = res.data.data
-  console.log(cryptos)
 })
 
 </script>
