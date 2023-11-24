@@ -6,7 +6,7 @@
          <img :src="img" :alt="'Logo ' + crypto.name" />
       </div>
       <div style="display: inline-block; vertical-align: middle" class="ellipsis">
-        <a v-bind:href="'/assets/'+crypto.id">{{ crypto.name }}
+        <a v-bind:href="'/coin/'+crypto.id">{{ crypto.name }}
           <p style="font-size: 0.8em; opacity: 0.7">{{ crypto.symbol }}</p>
         </a>
       </div>
