@@ -3,15 +3,17 @@ import {computed, onMounted, ref} from "vue";
 import {getCryptos} from "../api/api";
 const cryptos = ref([])
 
-let cryptoAmount = null
-let cryptoType = null
-let cryptoType2 = null
-let convertedAmount = null
+let cryptoAmount = ref(null)
+let cryptoType = ref(null)
+let cryptoType2 = ref(null)
+let convertedAmount = computed(() => {
+  if (cryptoAmount.value == null || cryptoType.value == null || cryptoType2.value == null) {
+    return null
+  }
+  return cryptoAmount.value * cryptoType.value.priceUsd / cryptoType2.value.priceUsd
+})
 
-function convertCrypto() {
-  convertedAmount = cryptoAmount * cryptoType.priceUsd / cryptoType2.priceUsd;
-  console.log(convertedAmount);
-}
+
 
 onMounted(async () => {
   const res = await getCryptos()
@@ -53,7 +55,7 @@ onMounted(async () => {
                 <option v-for="crypto in cryptos" :value="crypto">{{ crypto.name }}</option>
 
               </select>
-              <button @click="convertCrypto()"
+              <button 
                 class="flex px-3 items-center text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-md active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
                 <svg class="w-5 h-5 item-center" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round"
                   stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
@@ -66,7 +68,7 @@ onMounted(async () => {
                 <option v-for="crypto in cryptos" :value="crypto">{{ crypto.name }}</option>
               </select>
             </div>
-            <div v-if="convertedAmount !== null" class="mt-4 flex justify-center">
+            <div v-if="convertedAmount != null" class="mt-4 flex justify-center">
               <p>Résultat : {{ convertedAmount }} {{ cryptoType2.symbol }}</p>
             </div>
           </div>
