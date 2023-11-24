@@ -46,7 +46,7 @@
 </template>
 
 <script setup>
-import {computed, onMounted, ref} from "vue";
+import {onMounted, ref} from "vue";
 import Liste from "./Liste.vue";
 import {getCryptos} from "../api/api";
 

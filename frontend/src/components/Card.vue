@@ -19,8 +19,6 @@
   </div>
 </template>
 <script setup>
-import { computed } from 'vue';
-
 const { card } = defineProps({
   card: {
     type: Object,
