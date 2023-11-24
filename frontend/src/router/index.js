@@ -2,8 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Accueil from '../views/Accueil.vue'
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
+import PlatformsExchanges from "../views/PlatformsExchanges.vue";
 import Exchange from "../views/Exchange.vue";
-import aExchange from "../views/aExchange.vue";
 import Coin from "../views/Coin.vue";
 import Convertir from "../views/Convertir.vue";
 import Wallet from "../views/Wallet.vue";
@@ -24,13 +24,13 @@ const router = createRouter({
       name: 'Register',
       component: Register
     }, {
-      path: '/exchange',
-      name: 'Exchange',
-      component: Exchange
+      path: '/exchanges',
+      name: 'Exchanges',
+      component: PlatformsExchanges
     }, {
       path: '/exchange/:id',
-      name: 'aExchange',
-      component: aExchange
+      name: 'Exchange',
+      component: Exchange
     }, {
       path: '/coin/:id',
       name: 'Coin',
