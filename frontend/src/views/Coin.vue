@@ -21,8 +21,10 @@
 import {getCrypto, getCryptoHistory} from "../api/api";
 import {computed, onMounted, ref} from "vue";
 import ChartCoin from "../components/ChartCoin.vue";
+import router from "../router";
 
-const id = 'bitcoin'
+const id = router.currentRoute.value.params.id
+
 const coin = ref(null)
 const coinHistory = ref(null)
 

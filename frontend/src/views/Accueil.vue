@@ -1,61 +1,7 @@
 <script setup>
-import { computed, onMounted, ref } from "vue";
-import ListeCrypto from "../components/ListeCrypto.vue";
-import Card from "../components/Card.vue";
-import { getCryptos, getAllExchanges, getAllMarkets, getAllCrypto } from "../api/api";
+import ListeCryptoV2 from "../components/ListeCryptoV2.vue";
+import ListeCard from "../components/ListeCard.vue";
 
-const cryptos = ref([])
-const nbexchanges = ref(null)
-const nbmarkets = ref(null)
-const totalCap= ref(null)
-const btcdominance = ref(null)
-
-onMounted(async () => {
-  const res = await getCryptos()
-  cryptos.value = res.data.data
-
-  const res2 = await getAllExchanges()
-  nbexchanges.value = res2.data.data.length
-
-  const res3 = await getAllMarkets()
-  nbmarkets.value = res3.data.data.length
-  const res4 = await getAllCrypto()
-
-  res4.data.data.forEach(element => {
-    totalCap.value += parseInt(element.marketCapUsd)
-  });
-  btcdominance.value = res4.data.data[0].marketCapUsd / totalCap.value * 100
-  
-})
-
-const cards = computed( () => {
-  return [
-    {
-      name: "Capitalisation",
-      value: parseFloat(totalCap.value/1000000000000).toFixed(2)+"T €",
-      svg: "M10.034,18.069a7.982,7.982,0,0,0,3.939-1.035l3.332,3.332a2.164,2.164,0,0,0,3.061-3.061L17.031,13.97a8.026,8.026,0,1,0-7,4.1ZM5.768,5.768A6.033,6.033,0,1,1,4,10.035,5.988,5.988,0,0,1,5.768,5.768Zm-.7,4.267a1.015,1.015,0,0,1,1-1.018.985.985,0,0,1,1,.983v.035A2.968,2.968,0,0,0,10.035,13a1,1,0,0,1,0,2A4.972,4.972,0,0,1,5.069,10.035Z",
-      color: "#a01bae",
-    },
-    {
-      name: "Sites d'échanges",
-      value: nbexchanges.value,
-      svg: "M3,22a1,1,0,0,1-1-1V3A1,1,0,0,1,4,3V21A1,1,0,0,1,3,22ZM8,5v6h7a1,1,0,0,0,1-1V6a1,1,0,0,0-1-1Zm13,8H8v6H21a1,1,0,0,0,1-1V14A1,1,0,0,0,21,13Z",
-      color: "#21c25e",
-    },
-    {
-      name: "Marchés",
-      value: nbmarkets.value,
-      svg: "M20,4H4A2,2,0,0,0,2,6V18a2,2,0,0,0,2,2H20a2,2,0,0,0,2-2V6A2,2,0,0,0,20,4ZM8,17H4V15H8Zm12-5H4V8H20Z",
-      color: "#1d3b8b",
-    },
-    {
-      name: "BTC Indice de dominance",
-      value: parseFloat(btcdominance.value).toFixed(2)+"%",
-      svg: "M17,6.009s2,4.01-1,4.01C12.838,10.019,13,3,15,2c0,0-7.655.767-9.57,7.673-.5-1.35-1.059-3.4-.43-4.666,0,0-3,2.005-3,7.017S4,22,12,22s10-4.965,10-8.974C22,7.012,17,6.009,17,6.009Z",
-      color: "#f87215",
-    }
-  ]
-})
 </script>
 
 <template>
@@ -78,100 +24,10 @@ const cards = computed( () => {
         <span>View more →</span>
       </a>
       <!-- Cards -->
-      <div class="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4">
-        <!-- Card -->
-        <Card v-for="card in cards" :key="card.name" :card="card" />
-      </div>
+      <ListeCard />
 
       <!-- New Table -->
-      <div class="w-full overflow-hidden rounded-lg shadow-xs">
-        <div class="w-full overflow-x-auto">
-          <table class="w-full whitespace-no-wrap">
-            <thead>
-              <tr
-                class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-                <th class="px-4 py-3">Rang</th>
-                <th class="px-4 py-3">Nom</th>
-                <th class="px-4 py-3">Prix</th>
-                <th class="px-4 py-3">Capitalisation</th>
-                <th class="px-4 py-3">VWAP</th>
-                <th class="px-4 py-3">Offre</th>
-                <th class="px-4 py-3">Volume (24h)</th>
-                <th class="px-4 py-3">Fluctuation (24h)</th>
-              </tr>
-            </thead>
-            <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-              <ListeCrypto v-for="crypto in cryptos" :key="crypto.name" :crypto="crypto" />
-            </tbody>
-          </table>
-        </div>
-        <div
-          class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
-          <span class="flex items-center col-span-3"> Showing 21-30 of 100 </span>
-          <span class="col-span-2"></span>
-          <!-- Pagination -->
-          <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
-            <nav aria-label="Table navigation">
-              <ul class="inline-flex items-center">
-                <li>
-                  <button class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple"
-                    aria-label="Previous">
-                    <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                      <path
-                        d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                        clip-rule="evenodd" fill-rule="evenodd"></path>
-                    </svg>
-                  </button>
-                </li>
-                <li>
-                  <button class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                    1
-                  </button>
-                </li>
-                <li>
-                  <button class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                    2
-                  </button>
-                </li>
-                <li>
-                  <button
-                    class="px-3 py-1 text-white transition-colors duration-150 bg-purple-600 border border-r-0 border-purple-600 rounded-md focus:outline-none focus:shadow-outline-purple">
-                    3
-                  </button>
-                </li>
-                <li>
-                  <button class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                    4
-                  </button>
-                </li>
-                <li>
-                  <span class="px-3 py-1">...</span>
-                </li>
-                <li>
-                  <button class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                    8
-                  </button>
-                </li>
-                <li>
-                  <button class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                    9
-                  </button>
-                </li>
-                <li>
-                  <button class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple"
-                    aria-label="Next">
-                    <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
-                      <path
-                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                        clip-rule="evenodd" fill-rule="evenodd"></path>
-                    </svg>
-                  </button>
-                </li>
-              </ul>
-            </nav>
-          </span>
-        </div>
-      </div>
+      <ListeCryptoV2 />
     </div>
   </main>
 </template>

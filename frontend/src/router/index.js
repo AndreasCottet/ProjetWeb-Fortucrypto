@@ -3,9 +3,10 @@ import Accueil from '../views/Accueil.vue'
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 import Exchange from "../views/Exchange.vue";
+import aExchange from "../views/aExchange.vue";
+import Coin from "../views/Coin.vue";
 import Convertir from "../views/Convertir.vue";
 import Wallet from "../views/Wallet.vue";
-import Coin from "../views/Coin.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,6 +28,14 @@ const router = createRouter({
       name: 'Exchange',
       component: Exchange
     }, {
+      path: '/exchange/:id',
+      name: 'aExchange',
+      component: aExchange
+    }, {
+      path: '/coin/:id',
+      name: 'Coin',
+      component: Coin,
+    }, {
       path: '/convertir',
       name: 'convertir',
       component: Convertir
@@ -34,10 +43,6 @@ const router = createRouter({
       path: '/wallet',
       name: 'Wallet',
       component: Wallet
-    }, {
-      path: '/coin/:id',
-      name: 'Coin',
-      component: Coin,
     }
   ]
 })
