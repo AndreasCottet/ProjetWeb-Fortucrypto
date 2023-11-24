@@ -3,6 +3,7 @@ import axios from 'axios';
 const API_URL = 'http://localhost:3000'
 const API_CRYPTO_URL = 'https://api.coincap.io/v2'
 
+
 export async function login(username, password) {
     return await axios.post(API_URL + '/login', {})
 }
@@ -21,4 +22,12 @@ export async function getCryptoHistory(id, startTime, endTime) {
 
 export async function getExchanges() {
     return await axios.get(API_CRYPTO_URL + '/exchanges?limit=10')
+}
+
+export async function getMarketByCryptoId(cryptoId) {
+    return await axios.get(API_CRYPTO_URL + '/markets?baseId=' + cryptoId)
+}
+
+export async function getExchangeById(exchangeId) {
+    return await axios.get(API_CRYPTO_URL + '/exchanges/' + exchangeId)
 }

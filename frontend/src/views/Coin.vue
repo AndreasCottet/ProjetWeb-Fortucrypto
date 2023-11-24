@@ -15,6 +15,7 @@
     </div>
   </div>
   <div><ChartCoin v-if="chartDatas.values.length > 0" :chart-values="chartDatas" /></div>
+  <ListeCoin />
 </template>
 
 <script setup>
@@ -22,6 +23,7 @@ import {getCrypto, getCryptoHistory} from "../api/api";
 import {computed, onMounted, ref} from "vue";
 import ChartCoin from "../components/ChartCoin.vue";
 import router from "../router";
+import ListeCoin from "../components/ListeCoin.vue";
 
 const id = router.currentRoute.value.params.id
 
