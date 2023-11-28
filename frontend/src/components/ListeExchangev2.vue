@@ -39,7 +39,8 @@ const labels = ref([
   {
     understandingName: 'Nom',
     name: 'name',
-    type: 'string'
+    type: 'string',
+    specialColumnType: 'coinExchangeColumn'
   },
   {
     understandingName: 'Paires d\'échange',
