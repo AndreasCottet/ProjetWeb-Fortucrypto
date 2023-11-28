@@ -7,9 +7,7 @@ import Liste from "./Liste.vue";
 const id = router.currentRoute.value.params.id
 const markets = ref([])
 const marketsName = ref({})
-
-
-let promises = []
+const labels = ref([])
 
 onMounted(async () => {
   let res = await getMarketByCryptoId(id)
@@ -27,18 +25,16 @@ onMounted(async () => {
     return market.volumeUsd24Hr && market.percentExchangeVolume
   })
 
-
-
   markets.value.forEach((market) => {
     if (!marketsName.value.hasOwnProperty(market.exchangeId)) {
       getExchangeById(market.exchangeId).then((res) => {
         return res.data.data
       }).then((exchange) => {
         marketsName.value[market.exchangeId] = exchange.name
+        market.name = exchange.name
         market.volumePercent = (market.volumeUsd24Hr / sumVolumeCoin) * 100
       })
     }
-    console.log(marketsName.value)
   })
 })
 
@@ -55,27 +51,44 @@ function kFormatter(num) {
 }
 
 
+labels.value = [
+  {
+    understandingName: 'Echange',
+    name: 'name',
+    type: 'string',
+    specialColumnType: 'coinExchangeColumn',
+  },
+  {
+    understandingName: 'Paire',
+    name: 'pair',
+    type: 'pair',
+  },
+  {
+    understandingName: 'Prix',
+    name: 'priceUsd',
+    type: 'float'
+  },
+  {
+    understandingName: 'Volume (24h)',
+    name: 'volumeUsd24Hr',
+    type: 'float'
+  },
+  {
+    understandingName: 'Volume (%)',
+    name: 'volumePercent',
+    type: 'percent'
+  }
+]
+
+
 </script>
 
 <template>
-  <Liste>
-    <template #head>
-      <th class="px-4 py-3">Exchange</th>
-      <th class="px-4 py-3">Paire</th>
-      <th class="px-4 py-3">Prix</th>
-      <th class="px-4 py-3">Volume (24h)</th>
-      <th class="px-4 py-3">Volume (%)</th>
-    </template>
-    <template #body>
-      <tr class="text-gray-700 dark:text-gray-400" v-for="market in markets">
-        <td class="px-4 py-3 text-sm">{{ marketsName[market.exchangeId] }}</td>
-        <td class="px-4 py-3 text-sm">{{ market.baseSymbol }} / {{ market.quoteSymbol }}</td>
-        <td class="px-4 py-3 text-sm">{{ kFormatter(parseFloat(market.priceUsd).toFixed(2)) }}€</td>
-        <td class="px-4 py-3 text-sm">{{ kFormatter(parseFloat(market.volumeUsd24Hr).toFixed(2)) }}€</td>
-        <td class="px-4 py-3 text-sm">{{ parseFloat(market.volumePercent).toFixed(2) }}%</td>
-      </tr>
-    </template>
-  </Liste>
+  <div v-if="markets && labels">
+    <Liste :labels="labels" :data="markets">
+    </Liste>
+  </div>
+
 </template>
 
 <style scoped>
