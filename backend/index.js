@@ -35,10 +35,10 @@ app.post('/login', async (req, res) => {
 })
 
 app.post('/register', async (req, res) => {
-    const { username, hashedPassword: password } = req.body
+    const { username, hashedPassword: password, firstname, lastname, email } = req.body
 
     try {
-        await User.create({username, password});
+        await User.create({username, password, firstname, lastname, email});
 
         res.status(200).send('Utilisateur créé')
     } catch (err) {

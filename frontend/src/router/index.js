@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { store } from '@/store';
 import Accueil from '../views/Accueil.vue'
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
@@ -46,5 +47,15 @@ const router = createRouter({
     }
   ]
 })
+router.beforeEach((to, from, next) => {
+  const RestrictedPages = ['/wallet', '/convertir'];
+  const authRequired = RestrictedPages.includes(to.path);
 
+  if (authRequired && !store.state.loggedIn) {
+    next('/login');
+  } else {
+    next();
+  }
+}
+);
 export default router

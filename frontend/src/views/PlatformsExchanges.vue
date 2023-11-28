@@ -2,15 +2,6 @@
 import {onMounted, ref} from "vue";
 import ListeExchangev2 from "../components/ListeExchangev2.vue";
 import ListeCard from "../components/ListeCard.vue";
-import {getExchanges} from "../api/api";
-
-const exchanges = ref([])
-
-onMounted(async () => {
-  const res = await getExchanges()
-  exchanges.value = res.data.data
-  console.log(exchanges)
-})
 
 </script>
 

@@ -68,7 +68,7 @@ function kFormatter(num) {
     </template>
     <template #body>
       <tr class="text-gray-700 dark:text-gray-400" v-for="market in markets">
-        <td class="px-4 py-3 text-sm">{{ marketsName[market.exchangeId] }}</td>
+        <td class="px-4 py-3 text-sm"><a  v-bind:href="'/exchange/' + market.exchangeId">{{ marketsName[market.exchangeId] }}</a></td>
         <td class="px-4 py-3 text-sm">{{ market.baseSymbol }} / {{ market.quoteSymbol }}</td>
         <td class="px-4 py-3 text-sm">{{ kFormatter(parseFloat(market.priceUsd).toFixed(2)) }}€</td>
         <td class="px-4 py-3 text-sm">{{ kFormatter(parseFloat(market.volumeUsd24Hr).toFixed(2)) }}€</td>
