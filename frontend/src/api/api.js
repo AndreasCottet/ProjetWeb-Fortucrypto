@@ -21,7 +21,7 @@ export async function getCryptoHistory(id, startTime, endTime) {
 }
 
 export async function getExchanges() {
-    return await axios.get(API_CRYPTO_URL + '/exchanges?limit=10')
+    return await axios.get(API_CRYPTO_URL + '/exchanges')
 }
 
 export async function getAllExchanges() {
