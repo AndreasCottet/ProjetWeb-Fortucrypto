@@ -4,8 +4,11 @@ import { Sequelize } from "sequelize";
 const sequelize = new Sequelize('sqlite:database-fortucrypto.db');
 
 export const User = sequelize.define('user', {
-    username: { type: Sequelize.STRING },
-    password: { type: Sequelize.STRING },
+    username: { type: Sequelize.STRING, allowNull: false, unique: true },
+    password: { type: Sequelize.STRING, allowNull: false },
+    email: { type: Sequelize.STRING, allowNull: false, unique: true, validate: { isEmail: true } },
+    firstname: { type: Sequelize.STRING, allowNull: false },
+    lastname: { type: Sequelize.STRING, allowNull: false},
 })
 
 export const Favorite = sequelize.define('favorite', {
@@ -24,10 +27,16 @@ export async function InitializeDb() {
         User.create({
             username: 'alice',
             password: '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',
+            email:'alice@mail.com',
+            firstname:'Alice',
+            lastname:'Liddell',
         });
         User.create({
             username: 'bob',
             password: '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',
+            email:'bob@mail.com',
+            firstname:'Bob',
+            lastname:'Lemon',
         });
     });
     Favorite.sync({ force: true }).then(() => console.log('Table favoris créée'));

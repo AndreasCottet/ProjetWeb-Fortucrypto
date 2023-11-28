@@ -88,7 +88,6 @@ labels.value = [
     <Liste :labels="labels" :data="markets">
     </Liste>
   </div>
-
 </template>
 
 <style scoped>

@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import Liste from "../components/Liste.vue";
 </script>
 
 <template>
@@ -9,13 +9,13 @@ import { onMounted, ref } from "vue";
         Portefeuille
       </h2>
       <!-- Cards -->
-      <div class="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-3">
-        <!-- Card -->
+      <div class="grid gap-6 mb-8 md:grid-cols-3 xl:grid-cols-3">
         <div class="flex items-center p-10 bg-white rounded-lg shadow-xs dark:bg-gray-800">
           <div class="p-3 mr-4 text-white-100 bg-orange-100 rounded-full dark:text-white-100 "
             style="background-color: #a01bae">
             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 22 22">
-              <path d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 9m18 0V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3">
+              <path
+                d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 9m18 0V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3">
               </path>
             </svg>
           </div>
@@ -28,7 +28,24 @@ import { onMounted, ref } from "vue";
             </p>
           </div>
         </div>
+        <div class="col-span-2 items-center p-10 bg-white rounded-lg shadow-xs dark:bg-gray-800">
+          <div class="grid gap-6 md:grid-cols-3 xl:grid-cols-3">
+            <div class="flex items-center p-10 rounded-lg shadow-xs bg-gray-800" style="background-color:#a01bae">
+            </div>
+            <div class="flex items-center p-10 rounded-lg shadow-xs bg-gray-800" style="background-color:#a01bae">
+            </div>
+            <div class="flex items-center p-10 rounded-lg shadow-xs bg-gray-800" style="background-color:#a01bae">
+            </div>
+          </div>
+        </div>
       </div>
+      <Liste>
+        <template v-slot:head>
+          <th class="px-4 py-3">Date</th>
+          <th class="px-4 py-3">Crypto</th>
+          <th class="px-4 py-3">Quantité</th>
+        </template>
+      </Liste>
     </div>
   </main>
 </template>
