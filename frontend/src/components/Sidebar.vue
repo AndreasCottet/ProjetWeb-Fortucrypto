@@ -1,7 +1,7 @@
 <template>
   <!-- Desktop sidebar -->
   <aside
-    class="z-20 flex-shrink-0 hidden w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block h-screen border-r border-gray-200 dark:border-gray-700">
+    class="z-20 sticky top-0 flex-shrink-0 hidden w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block h-screen border-r border-gray-200 dark:border-gray-700">
     <div class="py-4 text-gray-500 dark:text-gray-400">
       <router-link class="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200" to="/">
         <img src="../assets/logo.png" class="w-32 mx-auto">

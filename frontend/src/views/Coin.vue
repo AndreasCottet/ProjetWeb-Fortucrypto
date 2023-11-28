@@ -1,21 +1,48 @@
 <template>
-  <div class="flex flex-row w-full justify-center">
-    <div class="flex flex-row">
-      <img :src="img">
-      <div class="">
-        <h1 class="font-bold text-md">{{ coin?.name }} ({{ coin?.symbol }})</h1>
-        <p>{{ todayDate.toLocaleDateString('fr-FR',  { year: 'numeric', month: 'long', day: 'numeric'}) }}</p>
+  <div class="w-10/12 mx-auto">
+    <div class="flex flex-row gap-10 text-purple-100 bg-purple-600 rounded-lg py-6 mb-10">
+      <div class="pl-8 text-xl font-bold">
+        <p>Rang</p>
+        <h1 class="text-center">1</h1>
+      </div>
+      <div class="basis-1/4">
+        <h1 class="text-xl font-bold">Bitcoin (BTC)</h1>
+        <p class="text-lg font-semibold">$37,084.69 <span class="text-red-500 text-base">-0.77%</span></p>
+      </div>
+      <div>
+        <p class="font-semibold">Market Cap</p>
+        <h2>$724.74b</h2>
+      </div>
+      <div>
+        <p class="font-semibold">Volume (24Hr)</p>
+        <h2>$5.16b</h2>
+      </div>
+      <div>
+        <p  class="font-semibold">Supply</p>
+        <h2>19.55m BTC</h2>
       </div>
     </div>
-    <div class="inline-grid grid-cols-2 grid-rows-2">
-      <h2>HIGH</h2><p>{{ maxPrice }}</p>
-      <h2>LOW</h2><p>{{ minPrice }}</p>
-      <h2>AVERAGE</h2><p>{{ average }}</p>
-      <h2>CHANGE</h2><p>{{ fluctuation }}</p>
+
+    <div class="flex flex-row w-10/12 mx-auto">
+      <div class="flex flex-row mr-10">
+        <img :src="img" class="w-16 h-16 mr-4">
+        <div>
+          <h1 class="font-bold text-lg">{{ coin?.name }} ({{ coin?.symbol }})</h1>
+          <p>{{ todayDate.toLocaleDateString('fr-FR', {year: 'numeric', month: 'long', day: 'numeric'}) }}</p>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-4 text-gray-400">
+        <p>HIGH <span class="font-semibold text-white">{{ parseFloat(maxPrice).toFixed(2) }}</span></p>
+        <p>LOW <span class="font-semibold text-white">{{ parseFloat(minPrice).toFixed(2) }}</span></p>
+        <p>AVERAGE <span class="font-semibold text-white">{{ parseFloat(average).toFixed(2) }}</span></p>
+        <p>CHANGE <span class="font-semibold text-white">{{ parseFloat(fluctuation).toFixed(2) }}</span></p>
+      </div>
     </div>
+    <div class="w-10/12 mx-auto my-10">
+      <ChartCoin v-if="chartDatas.values.length > 0" :chart-values="chartDatas"/>
+    </div>
+    <ListeCoin/>
   </div>
-  <div><ChartCoin v-if="chartDatas.values.length > 0" :chart-values="chartDatas" /></div>
-  <ListeCoin />
 </template>
 
 <script setup>
@@ -42,7 +69,7 @@ onMounted(async () => {
 })
 
 const minPrice = computed(() => {
-  if(coinHistory.value && coinHistory.value.length > 0) {
+  if (coinHistory.value && coinHistory.value.length > 0) {
     return coinHistory.value.reduce((min, currentValue) => {
       return Math.min(min, currentValue.priceUsd)
     }, coinHistory.value[0].priceUsd);
@@ -51,7 +78,7 @@ const minPrice = computed(() => {
 })
 
 const maxPrice = computed(() => {
-  if(coinHistory.value && coinHistory.value.length > 0) {
+  if (coinHistory.value && coinHistory.value.length > 0) {
     return coinHistory.value.reduce((max, currentValue) => {
       return Math.max(max, currentValue.priceUsd)
     }, coinHistory.value[0].priceUsd);
@@ -60,7 +87,7 @@ const maxPrice = computed(() => {
 })
 
 const average = computed(() => {
-  if(coinHistory.value) {
+  if (coinHistory.value) {
     return coinHistory.value.reduce((acc, currentValue) => {
       return acc + parseFloat(currentValue.priceUsd)
     }, 0) / coinHistory.value.length
@@ -79,7 +106,7 @@ const fluctuation = computed(() => {
 })
 
 const chartDatas = computed(() => {
-  if(!coinHistory.value) {
+  if (!coinHistory.value) {
     return {
       values: [],
       labels: [],
@@ -89,7 +116,7 @@ const chartDatas = computed(() => {
     values: [],
     labels: [],
   }
-  for(let i = 0; i < coinHistory.value.length; i++) {
+  for (let i = 0; i < coinHistory.value.length; i++) {
     chartDatas.labels.push(new Date(coinHistory.value[i].time).getHours())
     chartDatas.values.push(parseFloat(coinHistory.value[i].priceUsd))
   }
@@ -105,7 +132,7 @@ const img = computed(() => {
 })
 
 let dataChart = computed(() => {
-  if(chartDatas.value.length === 0) {
+  if (chartDatas.value.length === 0) {
     return {}
   }
   return {
@@ -120,5 +147,17 @@ let dataChart = computed(() => {
     ]
   }
 })
+
+function kFormatter(num) {
+  if (num / 1000000000 > 1) {
+    return (num / 1000000000).toFixed(2) + 'B';
+  } else if (num / 1000000 > 1) {
+    return (num / 1000000).toFixed(2) + 'M';
+  } else if (num / 1000 > 1) {
+    return (num / 1000).toFixed(2) + 'K';
+  } else {
+    return num;
+  }
+}
 
 </script>

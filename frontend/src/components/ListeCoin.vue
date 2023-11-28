@@ -1,24 +1,33 @@
 <script setup>
 import {onMounted, ref} from "vue";
 import router from "../router";
-import {getExchangeById, getExchanges, getMarketByCryptoId} from "../api/api";
+import {getExchangeById, getMarketByCryptoId} from "../api/api";
 import Liste from "./Liste.vue";
 
 const id = router.currentRoute.value.params.id
 const markets = ref([])
 const marketsName = ref({})
 
+
 let promises = []
 
 onMounted(async () => {
   let res = await getMarketByCryptoId(id)
 
-  markets.value =  res.data.data.sort((a, b) => b.volumeUsd24Hr - a.volumeUsd24Hr);
+  markets.value = res.data.data
+  const sumVolumeCoin = markets.value.reduce((a, b) => {
+    if (isNaN(parseFloat(b.volumeUsd24Hr))) {
+      b.volumeUsd24Hr = 0
+    }
+    return a + parseFloat(b.volumeUsd24Hr)
+  }, 0)
+
+  markets.value =  markets.value.sort((a, b) => b.volumeUsd24Hr - a.volumeUsd24Hr);
   markets.value = markets.value.filter((market) => {
     return market.volumeUsd24Hr && market.percentExchangeVolume
   })
 
-  markets.value
+
 
   markets.value.forEach((market) => {
     if (!marketsName.value.hasOwnProperty(market.exchangeId)) {
@@ -26,13 +35,11 @@ onMounted(async () => {
         return res.data.data
       }).then((exchange) => {
         marketsName.value[market.exchangeId] = exchange.name
+        market.volumePercent = (market.volumeUsd24Hr / sumVolumeCoin) * 100
       })
-      // marketsName.value[market.exchangeId] = exchange.name
-      // marketsName.value.push(market.exchangeId)
     }
     console.log(marketsName.value)
   })
-  // console.log(markets.value)
 })
 
 function kFormatter(num) {
@@ -65,7 +72,7 @@ function kFormatter(num) {
         <td class="px-4 py-3 text-sm">{{ market.baseSymbol }} / {{ market.quoteSymbol }}</td>
         <td class="px-4 py-3 text-sm">{{ kFormatter(parseFloat(market.priceUsd).toFixed(2)) }}€</td>
         <td class="px-4 py-3 text-sm">{{ kFormatter(parseFloat(market.volumeUsd24Hr).toFixed(2)) }}€</td>
-        <td class="px-4 py-3 text-sm">{{ parseFloat(market.percentExchangeVolume) * 100 }} %</td>
+        <td class="px-4 py-3 text-sm">{{ parseFloat(market.volumePercent).toFixed(2) }}%</td>
       </tr>
     </template>
   </Liste>

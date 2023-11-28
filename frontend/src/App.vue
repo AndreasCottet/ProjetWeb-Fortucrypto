@@ -1,6 +1,6 @@
 <template>
   <body>
-    <div class="flex h-screen bg-gray-50 dark:bg-gray-900" id="app">
+    <div class="flex h-full bg-gray-50 dark:bg-gray-900" id="app">
       <Sidebar />
       <div class="flex flex-col flex-1 w-full">
         <Header />
