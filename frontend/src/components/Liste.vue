@@ -9,7 +9,7 @@
         </thead>
         <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
           <tr class="text-gray-700 dark:text-gray-400" v-for="value in data.slice(currentPage * 10, currentPage * 10 + 10)">
-            <td v-for="label in labels" class="px-4 py-3 text-sm">
+            <td v-for="label in labels" :class="{'px-4 py-3 text-sm': true, 'bg-red-900': value?.update === 'down', 'bg-green-900': value?.update === 'up'}">
               <div v-if="label?.specialColumnType === 'img'" class="flex flex-row">
                 <div class="w-10 h-10 mr-3 rounded-full md:block">
                   <img :src="value.img" :alt="'Logo ' + value.name"/>
@@ -26,7 +26,7 @@
               </div>
 
               <span v-else-if="label?.specialColumnType === 'fluctuation'" :class="{'px-2 py-1 font-semibold leading-tight rounded-full': true, 'dark:bg-red-700 dark:text-red-100': parseFloat(value[label.name]) < 0, 'dark:bg-green-700 dark:text-green-100':  parseFloat(value[label.name])}">{{ parseFloat(value[label.name]).toFixed(2) }} %</span>
-              <span v-else-if="label.type === 'float'">{{ kFormatter(parseFloat(value[label.name]).toFixed(2)) }}€</span>
+              <span v-else-if="label.type === 'float'">{{ label.dontUseFormatter ? parseFloat(value[label.name]) : kFormatter(parseFloat(value[label.name]).toFixed(2)) }}€</span>
               <span v-else-if="label.type === 'percent'">{{ parseFloat(value[label.name]).toFixed(2)  }} %</span>
               <span v-else-if="label.type === 'pair'">{{ value.baseSymbol  }} / {{ value.quoteSymbol }} </span>
               <span v-else>{{ value[label.name] }}</span>
@@ -123,6 +123,10 @@ function kFormatter(num) {
   } else {
     return num;
   }
+}
+
+function updateCrypto(idCrypto, isUp) {
+
 }
 
 

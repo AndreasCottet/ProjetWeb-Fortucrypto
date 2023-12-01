@@ -26,7 +26,8 @@ labels.value = [
   {
     understandingName: 'Prix',
     name: 'priceUsd',
-    type: 'float'
+    type: 'float',
+    dontUseFormatter: true
   },
   {
     understandingName: 'Capitalisation',
@@ -56,18 +57,6 @@ labels.value = [
   }
 ]
 
-function kFormatter(num) {
-  if (num / 1000000000 > 1) {
-    return (num / 1000000000).toFixed(2) + 'B';
-  } else if (num / 1000000 > 1) {
-    return (num / 1000000).toFixed(2) + 'M';
-  } else if (num / 1000 > 1) {
-    return (num / 1000).toFixed(2) + 'K';
-  } else {
-    return num;
-  }
-}
-
 onMounted(async () => {
   let res = await getCryptos()
   cryptos.value = res.data.data
@@ -75,4 +64,29 @@ onMounted(async () => {
     crypto.img = 'https://assets.coincap.io/assets/icons/' + crypto.symbol.toLowerCase() + '@2x.png'
   })
 })
+
+
+const pricesWs = new WebSocket('wss://ws.coincap.io/prices?assets=ALL')
+
+pricesWs.onmessage = function (msg) {
+  let data = JSON.parse(msg.data)
+  for (const [key, value] of Object.entries(data)) {
+    cryptos.value.forEach((crypto) => {
+      if (crypto.id === key) {
+
+        if (value > crypto.priceUsd) {
+          crypto.update = 'up'
+        } else {
+          crypto.update = 'down'
+        }
+
+        crypto.priceUsd = value
+
+        setTimeout(() => {
+          crypto.update = ''
+        }, 700)
+      }
+    })
+  }
+}
 </script>
