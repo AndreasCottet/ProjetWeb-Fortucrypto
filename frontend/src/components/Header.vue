@@ -35,7 +35,7 @@
         <li class="relative">
           <button class="align-middle rounded-full focus:shadow-outline-purple focus:outline-none"
             v-on:click="toggleProfileMenu" @keydown.escape="toggleProfileMenu" aria-label="Account" aria-haspopup="true">
-            <div class="bg-purple-500 w-10 h-10 rounded-full"><a class="text-2xl font-semibold text-white">M</a></div>
+            <div class="bg-purple-500 w-10 h-10 rounded-full"><a class="text-2xl font-semibold text-white"></a></div>
           </button>
           <template v-if="isProfileMenuOpen">
             <ul x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100"

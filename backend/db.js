@@ -11,16 +11,33 @@ export const User = sequelize.define('user', {
     lastname: { type: Sequelize.STRING, allowNull: false},
 })
 
-export const Favorite = sequelize.define('favorite', {
-    cryptoSymbol: { type: Sequelize.STRING },
-    user: { type: User},
+export const UserCryptos = sequelize.define('users_cryptos', {
+    userId: {
+        type: Sequelize.INTEGER,
+        references: {
+            model: User,
+            key: 'id'
+        }
+    },
+    cryptoId: { type: Sequelize.STRING },
+    amount: { type: Sequelize.INTEGER },
 })
 
-export const Crypto = sequelize.define('crypto', {
-    cryptoSymbol: { type: Sequelize.STRING },
+
+export const UsersFavoritesCrypto = sequelize.define('users_favorites_crypto', {
+    cryptoId: { type: Sequelize.STRING },
+    userId: {
+        type: Sequelize.INTEGER,
+        references: {
+            model: User,
+            key: 'id'
+        }
+    },
 })
 
 export async function InitializeDb() {
+    await sequelize.drop()
+
     User.sync({ force: true }).then(() => {
         console.log('Table user créée');
 
@@ -30,7 +47,23 @@ export async function InitializeDb() {
             email:'alice@mail.com',
             firstname:'Alice',
             lastname:'Liddell',
+        }).then((value) => {
+            UserCryptos.sync({ force: true }).then(() => {
+
+                UserCryptos.create({
+                    userId: value.id,
+                    cryptoId: 'bitcoin',
+                    amount: 1,
+                })
+
+                UserCryptos.create({
+                    userId: value.id,
+                    cryptoId: 'ethereum',
+                    amount: 2,
+                })
+            })
         });
+
         User.create({
             username: 'bob',
             password: '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',
@@ -39,6 +72,7 @@ export async function InitializeDb() {
             lastname:'Lemon',
         });
     });
-    Favorite.sync({ force: true }).then(() => console.log('Table favoris créée'));
-    Crypto.sync({ force: true }).then(() => console.log('Table crypto créée'));
+
+    // Favorite.sync({ force: true }).then(() => console.log('Table favoris créée'));
+    // Crypto.sync({ force: true }).then(() => console.log('Table crypto créée'));
 }

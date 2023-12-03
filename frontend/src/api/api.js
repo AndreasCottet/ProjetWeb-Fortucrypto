@@ -40,10 +40,14 @@ export async function getMarketByCryptoId(cryptoId) {
     return await axios.get(API_CRYPTO_URL + '/markets?baseId=' + cryptoId)
 }
 
-export async function getMarketByExchangeId(exchangeId) {
+export async function getMarketsByExchangeId(exchangeId) {
     return await axios.get(API_CRYPTO_URL + '/markets?exchangeId=' + exchangeId)
 }
 
 export async function getExchangeById(exchangeId) {
     return await axios.get(API_CRYPTO_URL + '/exchanges/' + exchangeId)
+}
+
+export async function getUserCrypto(username) {
+    return await axios.get(API_URL + '/user/' + username + '/cryptos')
 }

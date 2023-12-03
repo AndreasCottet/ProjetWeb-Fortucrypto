@@ -41,19 +41,46 @@
         <p>CHANGE <span class="font-semibold text-white">{{ parseFloat(fluctuation).toFixed(2) }}</span></p>
       </div>
     </div>
-    <div class="w-10/12 mx-auto my-10">
-      <ChartCoin v-if="chartDatas.values.length > 0" :chart-values="chartDatas" />
+    <div class="flex flex-row gap-10 mx-auto my-10 w-full">
+      <div class="w-8/12">
+        <ChartCoin v-if="chartDatas.values.length > 0" :chart-values="chartDatas"/>
+      </div>
+      <div v-if="loggedIn" class="flex flex-col bg-gray-800 rounded-lg px-4 py-2 w-3/12">
+        <h1 class="font-bold text-lg mb-2">Acheter</h1>
+        <label class="font-semibold">Echanger dû :</label>
+        <div class="flex flex-row" v-for="(userCrypto, index) in userCryptos" :class="{'hidden': !showOtherCrypto && index !== 0}">
+          <img :src="userCrypto.img" class="w-8 mr-2">
+          <h1 class="text-lg font-semibold">{{ userCrypto?.name }}</h1>
+        </div>
+        <button><img src=""/></button>
+
+        <label class="font-semibold">En :</label>
+        <div class="flex flex-row">
+          <img :src="img" class="w-8 mr-2">
+          <h1 class="text-lg font-semibold">{{ coin?.name }}</h1>
+        </div>
+      </div>
+      <div v-else class="bg-gray-800 rounded-lg px-4 py-2">
+        <h1>Vous avez envie d'acheter du {{ coin?.name }}</h1>
+        <button v-on:click="router.push({ name: 'Login' })" class="px-3 py-1 text-white bg-purple-600 border border-transparent rounded-md hover:bg-purple-700">Connectez-vous</button>
+      </div>
     </div>
     <ListeCoin />
   </div>
 </template>
 
 <script setup>
-import { getCrypto, getCryptoHistory } from "../api/api";
+import {getCrypto, getCryptoHistory, getUserCrypto} from "../api/api";
 import { computed, onMounted, ref } from "vue";
 import ChartCoin from "../components/ChartCoin.vue";
 import router from "../router";
 import ListeCoin from "../components/ListeCoin.vue";
+import {useStore} from "vuex";
+
+const store = useStore()
+
+const userCryptos = ref([])
+const showOtherCrypto = ref(false)
 
 const id = router.currentRoute.value.params.id
 
@@ -64,11 +91,32 @@ let startDate = new Date()
 let todayDate = new Date()
 startDate.setDate(startDate.getDate() - 1);
 
+const loggedIn = computed(() => store.getters.loggedIn);
+const username = computed(() => store.getters.username)
+
 onMounted(async () => {
   const res = await getCrypto(id)
   coin.value = res.data.data
   const resHistory = await getCryptoHistory(id, startDate.getTime(), todayDate.getTime())
   coinHistory.value = resHistory.data.data
+
+  const resUserCrypto = await getUserCrypto(username.value)
+  userCryptos.value = resUserCrypto.data
+
+  let resCrypto;
+  let i = 0;
+  let currentCrypto;
+
+  for(const crypto of userCryptos.value) {
+    resCrypto = await getCrypto(crypto.cryptoId)
+    currentCrypto = resCrypto.data.data
+    userCryptos.value[i].priceUsd = currentCrypto.priceUsd
+    userCryptos.value[i].img = 'https://assets.coincap.io/assets/icons/' + currentCrypto.symbol.toLowerCase() + '@2x.png'
+    userCryptos.value[i].name = currentCrypto.name
+    i++
+  }
+
+  console.log(userCryptos)
 })
 
 const minPrice = computed(() => {

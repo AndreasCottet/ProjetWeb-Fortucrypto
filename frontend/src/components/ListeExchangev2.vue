@@ -1,26 +1,5 @@
 <template>
     <Liste :labels="labels" :data="exchanges">
-<!--        <template v-slot:head>-->
-<!--            <th class="px-4 py-3">Classement</th>-->
-<!--            <th class="px-4 py-3">Nom</th>-->
-<!--            <th class="px-4 py-3">Paires d'échange</th>-->
-<!--            <th class="px-4 py-3">Volume (24h)</th>-->
-<!--            <th class="px-4 py-3">Total %</th>-->
-<!--        </template>-->
-<!--        <template v-slot:body v-if="exchanges.length > 0">-->
-<!--            <tr class="text-gray-700 dark:text-gray-400" v-for="exchange in exchanges">-->
-<!--                <td class="px-4 py-3 text-sm">{{ exchange.rank }}</td>-->
-<!--                <td class="px-4 py-3 text-sm flex">-->
-<!--                    <div style="display: inline-block; vertical-align: middle" class="ellipsis">-->
-<!--                        <a v-bind:href="'/exchange/' + exchange.exchangeId">{{ exchange.name }}-->
-<!--                        </a>-->
-<!--                    </div>-->
-<!--                </td>-->
-<!--                <td class="px-4 py-3 text-sm">{{ exchange.tradingPairs }}</td>-->
-<!--                <td class="px-4 py-3 text-sm"> {{ kFormatter(parseFloat(exchange.volumeUsd).toFixed(2)) }}€</td>-->
-<!--                <td class="px-4 py-3 text-sm">{{ parseFloat(exchange.percentTotalVolume).toFixed(2) }}%</td>-->
-<!--            </tr>-->
-<!--        </template>-->
     </Liste>
 </template>
 <script setup>

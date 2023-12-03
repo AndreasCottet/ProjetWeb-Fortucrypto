@@ -7,35 +7,42 @@
       </div>
       <div class="basis-1/4">
         <h1 class="text-xl font-bold">{{ exchange?.name }}</h1>
-        <p class="text-lg font-semibold">{{ exchange?.tradingPairs }} Paires<span class="text-red-500 text-base">-0.77%</span></p>
+        <p>{{ exchange?.tradingPairs }} paires</p>
       </div>
       <div>
         <p class="font-semibold">Volume (24Hr)</p>
         <h2>{{ parseFloat(exchange?.volumeUsd).toFixed(0) }}€</h2>
       </div>
       <div>
+        <p class="font-semibold">Volume d'échanges</p>
+        <h2>{{ parseFloat(exchange?.percentTotalVolume).toFixed(2) }} %</h2>
+      </div>
+      <div>
         <p class="font-semibold">Top paires</p>
-        <h2>19.55m BTC</h2>
+        <h2>{{ topMarket?.baseSymbol }} // {{ topMarket?.quoteSymbol }}</h2>
       </div>
     </div>
-    <div class="w-10/12 mx-auto my-10">
-    </div>
+    <ListeMarketExchange/>
   </div>
 </template>
 <script setup>
 import router from "../router";
 import { onMounted, ref } from "vue";
-import {getExchangeById, getMarketByCryptoId} from "../api/api";
+import {getExchangeById, getMarketsByExchangeId} from "../api/api";
+import ListeMarketExchange from "../components/ListeMarketExchange.vue";
 
-let market = ref(null)
 let exchange = ref(null)
 const id = router.currentRoute.value.params.id
 
+const topMarket = ref(null)
+
 onMounted(async () => {
-  let res = await getMarketByCryptoId(id)
-  market.value = res.data.data
   let res2 = await getExchangeById(id)
   exchange.value = res2.data.data
+
+  res2 = await getMarketsByExchangeId(id)
+  topMarket.value = res2.data.data[0]
+  console.log(res2)
 })
 
 function kFormatter(num) {
