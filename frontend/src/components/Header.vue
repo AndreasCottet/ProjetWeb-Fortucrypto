@@ -35,7 +35,11 @@
         <li class="relative">
           <button class="align-middle rounded-full focus:shadow-outline-purple focus:outline-none"
             v-on:click="toggleProfileMenu" @keydown.escape="toggleProfileMenu" aria-label="Account" aria-haspopup="true">
-            <div class="bg-purple-500 w-10 h-10 rounded-full"><a class="text-2xl font-semibold text-white"></a></div>
+            <div class="avatar placeholder">
+              <div class="bg-neutral text-neutral-content rounded-full bg-purple-500 w-10 h-10">
+                <span class="text-3xl">{{ username.charAt(0) }}</span>
+              </div>
+            </div>
           </button>
           <template v-if="isProfileMenuOpen">
             <ul x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100"
@@ -87,6 +91,7 @@ const store = useStore()
 const router = useRouter()
 
 const loggedIn = computed(() => store.getters.loggedIn);
+const username = computed(() => store.getters.username);
 
 
 function toggleTheme() {

@@ -88,5 +88,6 @@ pricesWs.onmessage = function (msg) {
       }
     })
   }
+  console.log(data);
 }
 </script>

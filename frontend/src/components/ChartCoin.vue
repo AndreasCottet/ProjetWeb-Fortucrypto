@@ -28,8 +28,10 @@ export default {
       required: true
     }
   },
+
   computed: {
     chartData() {
+      console.log(this.$props.chartValues)
       return {
         labels: this.$props.chartValues.labels,
         datasets: [
@@ -37,7 +39,7 @@ export default {
             label: 'Prix (€)',
             data: this.$props.chartValues.values,
             fill: false,
-            borderColor: '#f87979'
+            borderColor: this.$props.chartValues.changePercent24Hr < 0 ? '#ff0000' : "#7dd71d"
           }
         ]
       }
