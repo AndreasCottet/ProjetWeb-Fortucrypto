@@ -45,24 +45,8 @@
       <div class="w-8/12">
         <ChartCoin v-if="chartDatas.values.length > 0" :chart-values="chartDatas"/>
       </div>
-      <div v-if="loggedIn" class="flex flex-col bg-gray-800 rounded-lg px-4 py-2 w-3/12">
-        <h1 class="font-bold text-lg mb-2">Acheter</h1>
-        <label class="font-semibold">Echanger dû :</label>
-        <div class="flex flex-row" v-for="(userCrypto, index) in userCryptos" :class="{'hidden': !showOtherCrypto && index !== 0}">
-          <img :src="userCrypto.img" class="w-8 mr-2">
-          <h1 class="text-lg font-semibold">{{ userCrypto?.name }}</h1>
-        </div>
-        <button><img src=""/></button>
-
-        <label class="font-semibold">En :</label>
-        <div class="flex flex-row">
-          <img :src="img" class="w-8 mr-2">
-          <h1 class="text-lg font-semibold">{{ coin?.name }}</h1>
-        </div>
-      </div>
-      <div v-else class="bg-gray-800 rounded-lg px-4 py-2">
-        <h1>Vous avez envie d'acheter du {{ coin?.name }}</h1>
-        <button v-on:click="router.push({ name: 'Login' })" class="px-3 py-1 text-white bg-purple-600 border border-transparent rounded-md hover:bg-purple-700">Connectez-vous</button>
+      <div>
+        <CompareCoin />
       </div>
     </div>
     <ListeCoin />
@@ -76,6 +60,7 @@ import ChartCoin from "../components/ChartCoin.vue";
 import router from "../router";
 import ListeCoin from "../components/ListeCoin.vue";
 import {useStore} from "vuex";
+import CompareCoin from "../components/CompareCoin.vue";
 
 const store = useStore()
 

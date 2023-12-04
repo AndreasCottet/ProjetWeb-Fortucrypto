@@ -1,79 +1,108 @@
 <script setup>
-import {computed, onMounted, ref} from "vue";
-import {getCryptos} from "../api/api";
+import {computed, ref} from "vue";
+import router from "../router";
+
 const cryptos = ref([])
+const userCryptos = ref([])
+const userMoney = ref(0)
 
-let cryptoAmount = ref(null)
-let cryptoType = ref(null)
-let cryptoType2 = ref(null)
-let convertedAmount = computed(() => {
-  if (cryptoAmount.value == null || cryptoType.value == null || cryptoType2.value == null) {
-    return null
-  }
-  return cryptoAmount.value * cryptoType.value.priceUsd / cryptoType2.value.priceUsd
-})
+const account1 = ref(null)
+const account2 = ref(null)
 
+const chooseAccount1 = ref(false)
+const chooseAccount2 = ref(false)
 
-
-onMounted(async () => {
-  const res = await getCryptos()
-  cryptos.value = res.data.data
-  console.log(cryptos)
+const userCryptoMoney = computed(() => {
+  let total = 0
+  // for (const crypto of userCryptos.value) {
+  //   total += crypto.priceUsd * crypto.amount
+  // }
+  return total
 })
 
 
 </script>
 
 <template>
-  <main class="h-full overflow-y-auto">
-    <div class="container px-6 mx-auto grid">
-      <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
-        Convertisseur de crypto
-      </h2>
-      <!-- New Table -->
-      <div class="w-full overflow-hidden rounded-lg shadow-xs">
-        <div class="w-full overflow-x-auto">
-          <table class="w-full whitespace-no-wrap">
-            <thead>
-              <tr
-                class="mx-auto text-xs font-semibold tracking-wide text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-                <th class="px-4 py-3">Convertissez votre cryptomonnaie</th>
-              </tr>
-            </thead>
-          </table>
-          <div class="bg-gray-800 p-4">
+  <h1>Echanger ses cryptomonnaies</h1>
+  <p>Voici l'argent qui est sur votre compte : {{ userMoney }}</p>
+  <p>Voici l'argent de vos cryptomonnaies : {{ userCryptoMoney }}</p>
 
-            <div class="flex justify-center space-x-4 mb-4 mr-100">
-              <label for="cryptoAmount">Montant en crypto :</label>
-              <input v-model="cryptoAmount" type="number"
-                class="p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 transition duration-150 bg-gray-700" />
-            </div>
-            <div class="flex flex-row justify-center space-x-4 mb-4 ">
-              <select v-model="cryptoType"
-                class="p-2 border border-gray-300 bg-gray-700 rounded focus:outline-none focus:border-blue-500 transition duration-150">
-                <!-- Remplace les options avec les crypto-monnaies que tu souhaites supporter -->
-                <option v-for="crypto in cryptos" :value="crypto">{{ crypto.name }}</option>
+  <div class="bg-gray-800 rounded-lg py-4 px-4">
+    <h1 class="font-bold text-lg mb-2">Echanger</h1>
+    <h1>Choix du compte à débiter</h1>
 
-              </select>
-              <button 
-                class="flex px-3 items-center text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-md active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                <svg class="w-5 h-5 item-center" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round"
-                  stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                  <path d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"></path>
-                </svg>
-              </button>
-              <select v-model="cryptoType2"
-                class="p-2 border border-gray-300 bg-gray-700 rounded focus:outline-none focus:border-blue-500 transition duration-150">
-                <!-- Remplace les options avec les devises que tu souhaites supporter -->
-                <option v-for="crypto in cryptos" :value="crypto">{{ crypto.name }}</option>
-              </select>
-            </div>
-            <div v-if="convertedAmount != null" class="mt-4 flex justify-center">
-              <p>Résultat : {{ convertedAmount }} {{ cryptoType2.symbol }}</p>
-            </div>
-          </div>
-        </div>
+    <div v-if="chooseAccount1">
+      <div class="flex flex-row hover:border hover:border-gray-500 rounded-lg py-2 px-2 hover:bg-gray-900"
+           v-for="crypto in userCryptos" v-on:click="() => {
+              account1 = crypto
+              chooseAccount1 = false
+         }">
+        <img class="w-8 mr-2"
+             :src="'https://assets.coincap.io/assets/icons/' + crypto.symbol.toLowerCase() + '@2x.png'"/>
+        <p>{{ crypto.name }}</p>
+      </div>
+      <div>
+        <img class="w-8 mr-2"
+             :src="'https://assets.coincap.io/assets/icons/' + crypto.symbol.toLowerCase() + '@2x.png'"/>
+        <p>{{ userMoney }}</p>
       </div>
     </div>
-  </main>
+
+    <div v-if="chooseAccount2" class="overflow-scroll h-64 mb-4">
+      <div class="flex flex-row hover:border hover:border-gray-500 rounded-lg py-2 px-2 hover:bg-gray-900"
+           v-for="crypto in cryptos" v-on:click="() => {
+              account2 = crypto
+              chooseAccount2 = false
+         }">
+        <img class="w-8 mr-2"
+             :src="'https://assets.coincap.io/assets/icons/' + crypto.symbol.toLowerCase() + '@2x.png'"/>
+        <p>{{ crypto.name }}</p>
+      </div>
+      <div>
+<!--        <img class="w-8 mr-2"-->
+<!--             :src="'https://assets.coincap.io/assets/icons/' + crypto.symbol.toLowerCase() + '.png'"/>-->
+        <p>{{ userMoney }}</p>
+      </div>
+    </div>
+
+    <div v-else>
+      <p v-if="!account1" class="bg-gray-700 rounded-lg py-2 px-4" v-on:click="chooseAccount1 = true">Choisissez une
+        cryptomonnaie</p>
+      <div v-else class="flex flex-row gap-2 bg-gray-700 rounded-lg p-2 text-gray-300 mb-2"
+           v-on:click="chooseAccount1 = true">
+        <div class="flex flex-row gap-2">
+<!--          <img class="w-8"-->
+<!--               :src="'https://assets.coincap.io/assets/icons/' + crypto1?.symbol.toLowerCase() + '@2x.png'"/>-->
+<!--          <p>{{ crypto1?.name }}</p>-->
+        </div>
+      </div>
+<!--      <div class="flex flex-row items-center justify-between bg-gray-700 rounded-lg px-2" v-if="crypto1 && crypto2">-->
+<!--        <input type="number" min="0" required-->
+<!--               class="bg-transparent bg-gray-700 rounded-lg p-2 text-gray-300 text-base p-1 w-full"-->
+<!--               v-model="cryptoAmount">-->
+<!--        <p>{{ crypto1?.symbol }}</p>-->
+<!--      </div>-->
+
+      <h1 class="font-bold text-lg my-2">En :</h1>
+
+      <p v-if="!account2" class="bg-gray-700 rounded-lg py-2 px-4" v-on:click="chooseAccount2 = true">Choisissez un
+        deuxième compte</p>
+      <div v-else class="flex flex-row gap-2 bg-gray-700 rounded-lg p-2 text-gray-300"
+           v-on:click="chooseAccount2 = true">
+<!--        <img class="w-8" :src="'https://assets.coincap.io/assets/icons/' + crypto2?.symbol.toLowerCase() + '@2x.png'"/>-->
+<!--        <p>{{ crypto2?.name }}</p>-->
+      </div>
+      <div class="flex flex-row" v-if="account2 && account2">
+<!--        <p class="bg-transparent bg-gray-700 rounded-lg p-2 text-gray-300 items-center justify-center">-->
+<!--          {{ parseFloat(crypto2Res).toFixed(2) }} {{ crypto2?.symbol }}</p>-->
+      </div>
+    </div>
+    <button class="px-3 py-1 text-sm font-medium text-white bg-purple-600 border border-transparent rounded-md hover:bg-purple-700" v-on:click="router.push({name: 'Convertir'})">
+      Acheter des cryptomonnaie
+    </button>
+  </div>
+
+
+
 </template>
