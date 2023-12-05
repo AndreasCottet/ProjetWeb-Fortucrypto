@@ -9,21 +9,21 @@
 
     
     <div class="flex flex-row justify-between mb-4">
-      <input type="text" placeholder="Michel" class="w-44 bg-gray-500 rounded-lg px-4 py-2 mr-4" v-model="form.firstname">
-      <input type="text" placeholder="Michel" class="w-44 bg-gray-500 rounded-lg px-4 py-2" v-model="form.lastname">
+      <input type="text" placeholder="Michel" class="w-44 bg-gray-700 rounded-lg px-4 py-2 mr-4 focus:outline-none focus:bg-gray-600" v-model="form.firstname">
+      <input type="text" placeholder="Michel" class="w-44 bg-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:bg-gray-600" v-model="form.lastname">
     </div>
 
     <label class="mb-1 font-light">Email</label>
-    <input type="text" placeholder="Michel@gmail.com" class="w-96 bg-gray-500 rounded-lg px-4 py-2 mb-4 focus:outline-none" v-model="form.email">
+    <input type="text" placeholder="Michel@gmail.com" class="w-96 bg-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:bg-gray-600" v-model="form.email">
 
     <label class="mb-1 font-light">Nom d'utilisateur</label>
-    <input type="text" placeholder="Michel Michel" class="w-96 bg-gray-500 rounded-lg px-4 py-2 mb-4 focus:outline-none" v-model="form.username">
+    <input type="text" placeholder="Michel Michel" class="w-96 bg-gray-700 rounded-lg px-4 py-2 mb-4 focus:outline-none focus:bg-gray-600" v-model="form.username">
 
     <label class="mb-1 font-light">Mot de passe</label>
-    <input type="password" placeholder="*************" class="w-96 bg-gray-500 rounded-lg px-4 py-2 mb-12" v-model="form.password">
+    <input type="password" placeholder="*************" class="w-96 bg-gray-700 rounded-lg px-4 py-2 mb-12 focus:outline-none focus:bg-gray-600" v-model="form.password">
 
 
-    <button class="rounded-lg bg-purple-600 text-white border-4 border-purple-600 hover:text-purple-600 hover:bg-white h-12 mb-2">Je m'inscris</button>
+    <button class="rounded-lg bg-purple-600 text-white border-4 border-purple-600 hover:bg-purple-700 hover:border-purple-700 h-12 mb-2">Je m'inscris</button>
   </form>
 </template>
 

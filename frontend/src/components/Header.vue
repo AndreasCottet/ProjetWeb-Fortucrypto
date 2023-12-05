@@ -24,7 +24,7 @@
           </div>
           <form>
             <input ref="search"
-              class="w-full pl-8 py-2 text-sm border-0 rounded-md bg-gray-700 text-gray-200 focus:placeholder-gray-500 focus:border-purple-300 focus:outline-none"
+              class="w-full pl-8 py-2 text-sm border-0 rounded-md bg-gray-700 text-gray-200 focus:placeholder-gray-500 focus:outline-none"
               type="text" placeholder="Search for projects" aria-label="Search" v-model="searchItem" />
           </form>
         </div>
@@ -33,7 +33,7 @@
 
         <!-- Profile menu -->
         <li class="relative">
-          <button class="align-middle rounded-full focus:shadow-outline-purple focus:outline-none"
+          <button class="align-middle rounded-full"
             v-on:click="toggleProfileMenu" @keydown.escape="toggleProfileMenu" aria-label="Account" aria-haspopup="true">
             <div class="avatar placeholder">
               <div class="bg-neutral text-neutral-content rounded-full bg-purple-500 w-10 h-10">
@@ -61,11 +61,11 @@
       </ul>
       <ul v-else class="flex items-center flex-shrink-0 space-x-3">
         <RouterLink to="/login"
-          class="px-3 py-1 text-sm font-medium text-white bg-purple-600 border border-transparent rounded-md hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+          class="px-3 py-1 text-sm font-medium text-white bg-purple-600 border border-transparent rounded-md hover:bg-purple-700">
           Connexion
         </RouterLink>
         <RouterLink to="/register"
-          class="px-3 py-1 text-sm font-medium leading-5 text-white bg-purple-600 border border-transparent rounded-md active:bg-purple-600 hover:bg-purple-700">
+          class="px-3 py-1 text-sm font-medium leading-5 text-white bg-purple-600 border border-transparent rounded-md hover:bg-purple-700">
           Inscription
         </RouterLink>
       </ul>

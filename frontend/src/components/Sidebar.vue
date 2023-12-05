@@ -1,15 +1,15 @@
 <template>
   <!-- Desktop sidebar -->
   <aside
-    class="z-20 sticky top-0 flex-shrink-0 hidden w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block h-screen border-r border-gray-200 dark:border-gray-700">
-    <div class="py-4 text-gray-500 dark:text-gray-400">
-      <router-link class="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200" to="/">
+    class="z-20 sticky top-0 flex-shrink-0 w-64 overflow-y-auto bg-gray-800 md:block h-screen border-r border-gray-700">
+    <div class="py-4 text-gray-400">
+      <router-link class="ml-6 text-lg font-bold text-gray-200" to="/">
         <img src="../assets/logo.png" class="w-32 mx-auto">
       </router-link>
       <ul class="mt-6">
         <li class="relative px-6 py-3" v-for="page in pages" :key="pages.name">
           <router-link exact-active-class="text-white"
-            class="inline-flex items-center w-full text-sm font-semibold transition duration-200 ease-in hover:bg-purple-500 hover:text-white py-2 px-2 rounded-lg"
+            class="inline-flex items-center w-full text-sm font-semibold transition duration-200 hover:bg-purple-500 hover:text-white py-2 px-2 rounded-lg"
             :to="page.to">
             <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round"
               stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">

@@ -1,5 +1,4 @@
 <template>
-  <!-- Card -->
   <div class="flex items-center p-4 rounded-lg bg-gray-800">
     <div class="p-3 mr-4 rounded-full text-white-100 " v-bind:style="{ 'background-color': card.color}">
       <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 22 22">
