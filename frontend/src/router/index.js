@@ -8,6 +8,7 @@ import Exchange from "../views/Exchange.vue";
 import Coin from "../views/Coin.vue";
 import Convertir from "../views/Convertir.vue";
 import Wallet from "../views/Wallet.vue";
+import ExchangeCoin from "../views/ExchangeCoin.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -39,7 +40,7 @@ const router = createRouter({
     }, {
       path: '/exchangeCoin',
       name: 'ExchangeCoin',
-      component: Convertir
+      component: ExchangeCoin,
     }, {
       path: '/wallet',
       name: 'Wallet',

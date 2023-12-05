@@ -1,5 +1,5 @@
 <script setup>
-import ListeExchangev2 from "../components/ListeExchangev2.vue";
+import ListeExchange from "../components/ListeExchange.vue";
 import ListeCard from "../components/ListeCard.vue";
 
 </script>
@@ -10,6 +10,6 @@ import ListeCard from "../components/ListeCard.vue";
       Plateformes d'échange
     </h2>
     <ListeCard />
-    <ListeExchangev2 />
+    <ListeExchange />
   </main>
 </template>

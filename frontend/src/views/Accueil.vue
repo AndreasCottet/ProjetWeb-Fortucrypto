@@ -1,5 +1,5 @@
 <script setup>
-import ListeCryptoV2 from "../components/ListeCryptoV2.vue";
+import ListeCrypto from "../components/ListeCrypto.vue";
 import ListeCard from "../components/ListeCard.vue";
 
 </script>
@@ -13,6 +13,6 @@ import ListeCard from "../components/ListeCard.vue";
     <ListeCard />
 
     <!-- New Table -->
-    <ListeCryptoV2 />
+    <ListeCrypto />
   </main>
 </template>
