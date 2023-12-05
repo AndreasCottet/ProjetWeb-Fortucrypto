@@ -1,28 +1,37 @@
 <template>
   <div class="w-10/12 mx-auto">
-    <div class="flex flex-row gap-10 text-purple-100 bg-purple-600 rounded-lg py-6 mb-10">
-      <div class="pl-8 text-xl font-bold">
-        <p>Rang</p>
-        <h1 class="text-center">{{ coin?.rank }}</h1>
+    <div class="text-purple-100 bg-purple-600 rounded-lg">
+      <div v-if="!isLoading" class="flex flex-row gap-10 py-6 mb-10">
+        <div class="pl-8 text-xl font-bold">
+          <p>Rang</p>
+          <h1 class="text-center">{{ coin?.rank }}</h1>
+        </div>
+        <div class="basis-1/4">
+          <h1 class="text-xl font-bold">{{ coin?.name }} ({{ coin?.symbol }})</h1>
+          <p class="text-lg font-semibold">{{ parseFloat(coin?.priceUsd).toFixed(2) }}€
+            <span v-if="parseFloat(coin?.changePercent24Hr) > 0" class="text-green-500 text-base ml-4">{{
+                parseFloat(coin?.changePercent24Hr).toFixed(2)
+              }}%</span>
+            <span v-if="parseFloat(coin?.changePercent24Hr) < 0" class="text-red-500 text-base ml-4">{{
+                parseFloat(coin?.changePercent24Hr).toFixed(2)
+              }}%</span>
+          </p>
+        </div>
+        <div>
+          <p class="font-semibold">Capitalisation</p>
+          <h2>{{ kFormatter(parseFloat(coin?.marketCapUsd).toFixed(2)) }}€ </h2>
+        </div>
+        <div>
+          <p class="font-semibold">Volume (24H)</p>
+          <h2>{{ kFormatter(parseFloat(coin?.volumeUsd24Hr).toFixed(2)) }}€</h2>
+        </div>
+        <div>
+          <p class="font-semibold">Quantité</p>
+          <h2>{{ kFormatter(parseFloat(coin?.supply).toFixed(2)) }} {{ coin?.symbol }}</h2>
+        </div>
       </div>
-      <div class="basis-1/4">
-        <h1 class="text-xl font-bold">{{ coin?.name }} ({{ coin?.symbol }})</h1>
-        <p class="text-lg font-semibold">{{ parseFloat(coin?.priceUsd).toFixed(2) }}€
-          <span class="text-green-500 text-base ml-4" v-if="parseFloat(coin?.changePercent24Hr) > 0">{{ parseFloat(coin?.changePercent24Hr).toFixed(2) }}%</span>
-          <span class="text-red-500 text-base ml-4" v-if="parseFloat(coin?.changePercent24Hr) < 0">{{ parseFloat(coin?.changePercent24Hr).toFixed(2) }}%</span>
-        </p>
-      </div>
-      <div>
-        <p class="font-semibold">Capitalisation</p>
-        <h2>{{ kFormatter(parseFloat(coin?.marketCapUsd).toFixed(2)) }}€ </h2>
-      </div>
-      <div>
-        <p class="font-semibold">Volume (24H)</p>
-        <h2>{{ kFormatter(parseFloat(coin?.volumeUsd24Hr).toFixed(2)) }}€</h2>
-      </div>
-      <div>
-        <p class="font-semibold">Quantité</p>
-        <h2>{{ kFormatter(parseFloat(coin?.supply).toFixed(2)) }} {{ coin?.symbol }}</h2>
+      <div v-else class="text-center mx-auto">
+        <Loading />
       </div>
     </div>
 
@@ -31,7 +40,7 @@
         <img :src="img" class="w-16 h-16 mr-4">
         <div>
           <h1 class="font-bold text-lg">{{ coin?.name }} ({{ coin?.symbol }})</h1>
-          <p>{{ todayDate.toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' }) }}</p>
+          <p>{{ todayDate.toLocaleDateString('fr-FR', {year: 'numeric', month: 'long', day: 'numeric'}) }}</p>
         </div>
       </div>
       <div class="grid grid-cols-2 gap-4 text-gray-400">
@@ -46,26 +55,28 @@
         <ChartCoin v-if="chartDatas.values.length > 0" :chart-values="chartDatas"/>
       </div>
       <div>
-        <CompareCoin />
+        <CompareCoin/>
       </div>
     </div>
-    <ListeCoin :crypto-id="cryptoId" />
+    <ListeCoin :crypto-id="cryptoId"/>
   </div>
 </template>
 
 <script setup>
 import {getCrypto, getCryptoHistory, getUserCrypto} from "../api/api";
-import { computed, onMounted, ref } from "vue";
+import {computed, onMounted, ref} from "vue";
 import ChartCoin from "../components/ChartCoin.vue";
 import router from "../router";
 import ListeCoin from "../components/ListeCoin.vue";
 import {useStore} from "vuex";
 import CompareCoin from "../components/CompareCoin.vue";
 import {kFormatter} from "../scripts/tools";
+import Loading from "../components/Loading.vue";
 
 const store = useStore()
 
 const userCryptos = ref([])
+const isLoading = ref(true)
 
 const cryptoId = router.currentRoute.value.params.id
 
@@ -84,6 +95,8 @@ onMounted(async () => {
   const resHistory = await getCryptoHistory(cryptoId, startDate.getTime(), todayDate.getTime())
   coinHistory.value = resHistory.data.data
 
+  isLoading.value = false
+
   const resUserCrypto = await getUserCrypto(username.value)
   userCryptos.value = resUserCrypto.data
 
@@ -91,7 +104,8 @@ onMounted(async () => {
   let i = 0;
   let currentCrypto;
 
-  for(const crypto of userCryptos.value) {
+
+  for (const crypto of userCryptos.value) {
     resCrypto = await getCrypto(crypto.cryptoId)
     currentCrypto = resCrypto.data.data
     userCryptos.value[i].priceUsd = currentCrypto.priceUsd
@@ -99,7 +113,6 @@ onMounted(async () => {
     userCryptos.value[i].name = currentCrypto.name
     i++
   }
-
 })
 
 const minPrice = computed(() => {

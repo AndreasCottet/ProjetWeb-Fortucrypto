@@ -1,6 +1,6 @@
 <template>
     <div class="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4">
-        <Card v-for="card in cards" :key="card.name" :card="card" />
+        <Card v-for="card in cards" :key="card.name" :card="card" :is-loading="isLoading" />
     </div>
 </template>
 <script setup>
@@ -12,6 +12,7 @@ const nbExchanges = ref(0)
 const nbMarkets = ref(0)
 const totalCap= ref(0)
 const btcDominance = ref(0)
+const isLoading = ref(true)
 
 
 onMounted(async () => {
@@ -29,6 +30,8 @@ onMounted(async () => {
     });
 
     btcDominance.value = res.data.data[0].marketCapUsd / totalCap.value * 100
+
+    isLoading.value = false
   } catch (e) {
     console.error(e)
   }

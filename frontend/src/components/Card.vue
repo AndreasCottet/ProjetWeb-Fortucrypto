@@ -7,7 +7,10 @@
         </path>
       </svg>
     </div>
-    <div>
+    <div v-if="isLoading">
+      <Loading />
+    </div>
+    <div v-else>
       <p class="mb-2 text-sm font-medium text-gray-400">
         {{ card.name }}
       </p>
@@ -18,10 +21,17 @@
   </div>
 </template>
 <script setup>
+import Loading from "./Loading.vue";
+
 const { card } = defineProps({
   card: {
     type: Object,
     required: true
+  },
+  isLoading : {
+    type: Boolean,
+    required: false,
+    default: false
   }
 })
 </script>   

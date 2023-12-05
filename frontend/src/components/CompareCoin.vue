@@ -26,7 +26,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="bg-gray-800 rounded-lg py-4 px-4">
+  <div class="bg-gray-800 rounded-lg py-4 px-4 h-74">
     <h1 class="font-bold text-lg mb-2">Comparer</h1>
     <div v-if="chooseCrypto1 || chooseCrypto2" class="overflow-scroll h-64 mb-4">
       <div class="flex flex-row hover:border hover:border-gray-500 rounded-lg py-2 px-2 hover:bg-gray-900"

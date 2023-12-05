@@ -12,7 +12,7 @@
                 ref="target">
                 <input ref="search" v-model="ask" class="w-full bg-transparent focus:outline-none" type="text"
                     placeholder="Rechercher une cryptomonnaie ou une plateforme" aria-label="Search" />
-                <select v-model="type" class="bg-transparent focus:outline-none">
+                <select v-model="type" class="bg-transparent focus:outline-none border-transparent">
                     <option value="coin" class="bg-gray-700"> Crypto </option>
                     <option value="exchange" class="bg-gray-700"> Exchange </option>
                 </select>

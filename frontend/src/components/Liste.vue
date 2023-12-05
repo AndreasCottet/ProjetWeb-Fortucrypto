@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full overflow-hidden rounded-lg" v-if="data && labels">
+  <div class="w-full overflow-hidden rounded-lg" v-if="labels && data.length > 0">
     <div class="w-full overflow-x-auto">
       <table class="w-full whitespace-no-wrap">
         <thead>
@@ -91,19 +91,25 @@
       </span>
     </div>
   </div>
-  <div v-else class="text-center">
-    <h1>Chargement ...</h1>
+  <div v-else class="w-full bg-gray-800 rounded-lg text-center p-4">
+      <Loading />
   </div>
 </template>
 <script setup>
 
 import {computed, ref} from "vue";
 import {kFormatter} from "../scripts/tools";
+import Loading from "./Loading.vue";
 
 const props = defineProps(
     {
       labels: [],
-      data: []
+      data: [],
+      isLoading: {
+        type: Boolean,
+        required: false,
+        default: false
+      }
     }
 )
 

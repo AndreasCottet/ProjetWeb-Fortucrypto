@@ -23,7 +23,7 @@
               </div>
             </div>
           </button>
-          <template v-if="isProfileMenuOpen">
+          <div v-if="isProfileMenuOpen">
             <ul class="absolute right-0 w-56 p-2 mt-2 space-y-2 text-gray-400 rounded-md bg-gray-700"
                 aria-label="submenu">
               <li class="flex" v-on:click="logout">
@@ -40,7 +40,7 @@
                 </a>
               </li>
             </ul>
-          </template>
+          </div>
         </li>
       </ul>
       <ul v-else class="flex items-center flex-shrink-0 space-x-3">
@@ -63,8 +63,6 @@ import {useStore} from "vuex";
 import {RouterLink, useRouter} from "vue-router";
 import Search from "./Search.vue";
 
-const emits = defineEmits(['openSideMenu'])
-
 const isProfileMenuOpen = ref(false);
 const store = useStore()
 const router = useRouter()
@@ -73,11 +71,6 @@ const loggedIn = computed(() => store.getters.loggedIn);
 const username = computed(() => store.getters.username);
 
 const search = ref(null)
-const searchItem = ref('')
-
-function toggleSideMenu() {
-  return emits('openSideMenu');
-}
 
 function toggleProfileMenu() {
   isProfileMenuOpen.value = !isProfileMenuOpen.value;
