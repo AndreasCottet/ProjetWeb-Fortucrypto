@@ -1,14 +1,14 @@
 <template>
-  <div class="w-full overflow-hidden rounded-lg shadow-xs" v-if="data && labels">
+  <div class="w-full overflow-hidden rounded-lg" v-if="data && labels">
     <div class="w-full overflow-x-auto">
       <table class="w-full whitespace-no-wrap">
         <thead>
-          <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+          <tr class="text-xs font-semibold text-left uppercase border-b border-gray-700 text-gray-400 bg-gray-800">
             <th v-for="label in labels" class="px-4 py-3">{{ label.understandingName }}</th>
           </tr>
         </thead>
-        <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-          <tr class="text-gray-700 dark:text-gray-400" v-for="value in data.slice(currentPage * 10, currentPage * 10 + 10)">
+        <tbody class="divide-y divide-gray-700 bg-gray-800">
+          <tr class="text-gray-400" v-for="value in data.slice(currentPage * 10, currentPage * 10 + 10)">
             <td v-for="label in labels" :class="{'px-4 py-3 text-sm': true, 'bg-red-900': value?.update === 'down', 'bg-green-900': value?.update === 'up'}">
               <div v-if="label?.specialColumnType === 'img'" class="flex flex-row">
                 <div class="w-10 h-10 mr-3 rounded-full md:block">
@@ -25,7 +25,7 @@
                 </a>
               </div>
 
-              <span v-else-if="label?.specialColumnType === 'fluctuation'" :class="{'px-2 py-1 font-semibold leading-tight rounded-full': true, 'dark:bg-red-700 dark:text-red-100': parseFloat(value[label.name]) < 0, 'dark:bg-green-700 dark:text-green-100':  parseFloat(value[label.name])}">{{ parseFloat(value[label.name]).toFixed(2) }} %</span>
+              <span v-else-if="label?.specialColumnType === 'fluctuation'" :class="{'px-2 py-1 font-semibold rounded-full': true, 'bg-red-700 text-red-100': parseFloat(value[label.name]) < 0, 'bg-green-700 text-green-100':  parseFloat(value[label.name]) > 0}">{{ parseFloat(value[label.name]).toFixed(2) }} %</span>
               <span v-else-if="label.type === 'float'">{{ label.dontUseFormatter ? parseFloat(value[label.name]) : kFormatter(parseFloat(value[label.name]).toFixed(2)) }}€</span>
               <span v-else-if="label.type === 'percent'">{{ parseFloat(value[label.name]).toFixed(2)  }} %</span>
               <span v-else-if="label.type === 'pair'">{{ value.baseSymbol  }} / {{ value.quoteSymbol }} </span>
@@ -35,16 +35,15 @@
         </tbody>
       </table>
     </div>
-    <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
+    <div class="grid px-4 py-3 text-xs font-semibold uppercase border-t border-gray-700 sm:grid-cols-9 text-gray-400 bg-gray-800">
       <span class="flex items-center col-span-3">Affichage {{ currentPage * 10 }}-{{ currentPage * 10 + 10 }} sur {{ data.length  }} </span>
       <span class="col-span-2"></span>
-      <!-- Pagination -->
       <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
         <nav aria-label="Table navigation">
           <ul class="inline-flex items-center" v-if="data.length > 1">
             <li>
               <button
-                  class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple"
+                  class="px-3 py-1 rounded-md rounded-l-lg"
                   aria-label="Previous"
               >
                 <svg
@@ -63,14 +62,14 @@
                 <li v-for="n in nbrPages">
                   <button
                       @click="currentPage = n - 1"
-                      :class="{'px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple': true, 'bg-purple-600 text-white': currentPage === n - 1}"
+                      :class="{'px-3 py-1 rounded-md': true, 'bg-purple-600 text-white': currentPage === n - 1}"
                   >
                     {{ n }}
                   </button>
                 </li>
             <li>
               <button
-                  class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple"
+                  class="px-3 py-1 rounded-md rounded-r-lg"
                   aria-label="Next"
               >
                 <svg

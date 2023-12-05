@@ -62,16 +62,15 @@ const labels = [{
 </script>
 
 <template>
-  <main class="h-full overflow-y-auto">
-    <div class="container px-6 mx-auto grid">
-      <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
+    <main class="container px-6 mx-auto grid">
+      <h2 class="my-6 text-2xl font-semibold text-gray-200">
         Portefeuille
       </h2>
       <!-- Cards -->
       <div class="flex flex-row gap-6 mb-8">
-        <div class="flex flex-col px-10 py-6 bg-white rounded-lg shadow-xs dark:bg-gray-800">
+        <div class="flex flex-col px-10 py-6 rounded-lg shadow-xs bg-gray-800">
           <div class="flex flex-row mb-4">
-            <div class="p-3 mr-4 text-white-100 bg-orange-100 rounded-full dark:text-white-100"
+            <div class="p-3 mr-4 rounded-full text-white-100"
                  style="background-color: #a01bae">
               <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 22 22">
                 <path
@@ -80,16 +79,16 @@ const labels = [{
               </svg>
             </div>
             <div>
-              <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">Solde actuel</p>
-              <p class="text-lg font-bold text-gray-700 dark:text-gray-200">{{ parseFloat(totalAmount).toFixed(2) }}€</p>
+              <p class="mb-2 text-sm font-medium text-gray-400">Solde actuel</p>
+              <p class="text-lg font-bold text-gray-200">{{ parseFloat(totalAmount).toFixed(2) }}€</p>
             </div>
           </div>
           <div class="flex flex-row justify-center gap-6">
-            <button class="px-2 py-2 font-semibold leading-tight rounded-full dark:bg-green-700 dark:text-green-100 w-32">Acheter</button>
-            <button class="px-2 py-2 font-semibold leading-tight rounded-full dark:bg-red-700 dark:text-red-100 w-32">Vendre</button>
+            <button class="px-2 py-2 font-semibold rounded-full bg-green-700 text-green-100 w-32">Acheter</button>
+            <button class="px-2 py-2 font-semibold rounded-full bg-red-700 text-red-100 w-32">Vendre</button>
           </div>
         </div>
-        <div class="px-10 bg-white rounded-lg shadow-xs dark:bg-gray-800">
+        <div class="px-10 rounded-lg shadow-xs bg-gray-800">
           <h1 class="font-bold text-lg py-4">Cryptomonnaie favorite</h1>
           <div class="flex gap-6">
             <img v-for="userCrypto in userCryptos" :src="userCrypto.img" class="w-10 h-10">
@@ -105,6 +104,5 @@ const labels = [{
       </div>
       <Liste :labels="labels" :data="values">
       </Liste>
-    </div>
   </main>
 </template>

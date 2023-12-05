@@ -3,12 +3,12 @@
     <h1 class="font-bold text-lg my-4">Se connecter</h1>
 
     <label class="mb-1 font-light">Nom d'utilisateur</label>
-    <input type="text" placeholder="Michel Michel" class="w-96 bg-gray-500 rounded-lg px-4 py-2 mb-4 focus:outline-none" v-model="form.username">
+    <input type="text" placeholder="Michel Michel" class="w-96 bg-gray-700 rounded-lg px-4 py-2 mb-4 focus:outline-none focus:bg-gray-600" v-model="form.username">
 
     <label class="mb-1 font-light">Mot de passe</label>
-    <input type="password" placeholder="*************" class="w-96 bg-gray-500 rounded-lg px-4 py-2 mb-12 focus:outline-none" v-model="form.password">
+    <input type="password" placeholder="*************" class="w-96 bg-gray-700 rounded-lg px-4 py-2 mb-12 focus:outline-none focus:bg-gray-600" v-model="form.password">
 
-    <button class="rounded-lg bg-purple-600 text-white border-4 border-purple-600 hover:text-purple-600 hover:bg-white h-12 mb-2">Connexion</button>
+    <button class="rounded-lg bg-purple-600 text-white border-4 border-purple-600 hover:text-white hover:bg-purple-700 hover:border-purple-700 h-12 mb-2">Connexion</button>
   </form>
 </template>
 
