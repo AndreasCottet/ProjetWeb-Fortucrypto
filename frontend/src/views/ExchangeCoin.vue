@@ -26,7 +26,7 @@ const amountRequested = computed(() => {
 const userCryptoMoney = computed(() => {
   let total = 0
   for (const crypto of userCryptos.value) {
-    if(crypto.type === 'money') continue
+    if (crypto.type === 'money') continue
     total += crypto.priceUsd * crypto.amount
   }
   return total
@@ -36,7 +36,7 @@ async function getUserCryptos() {
   let res = await getUserCrypto(username.value)
   userCryptos.value = res.data
 
-  for(let i = 0; i < userCryptos.value.length; i++) {
+  for (let i = 0; i < userCryptos.value.length; i++) {
     res = await getCrypto(userCryptos.value[i].cryptoId)
     userCryptos.value[i].symbol = res.data.data.symbol
     userCryptos.value[i].name = res.data.data.name
@@ -90,11 +90,11 @@ async function handleSubmitTrade() {
 
   try {
     let res = await submitTrade(username.value, trade)
-    if(res.status === 200) {
+    if (res.status === 200) {
       alert("Transaction effectuée avec succès")
       router.push({name: 'Accueil'})
     }
-  } catch(e) {
+  } catch (e) {
     alert('Une erreur est survenue');
     console.error(e)
   }
@@ -105,13 +105,13 @@ async function handleSubmitTrade() {
 
 <template>
   <div class="bg-gray-800 rounded-lg py-4 px-4 mt-10 w-6/12 mx-auto">
-    <h1 class="font-bold text-lg mb-2">Echanger ses cryptomonnaies</h1>
-    <p class="font-semibold text-base">L'argent de mon compte : {{ userMoney }}€</p>
-    <p class="font-semibold text-base">L'argent grâce aux cryptomonnaies : {{ userCryptoMoney.toFixed(2) }}€</p>
+    <h1 class="font-bold text-lg mb-6 text-center">Echanger ses cryptomonnaies</h1>
+    <p class="font-semibold text-base">Argent de mon compte : {{ userMoney }}€</p>
+    <p class="font-semibold text-base">Argent grâce aux cryptomonnaies : {{ userCryptoMoney.toFixed(2) }}€</p>
     <br>
     <h1 class="font-semibold mb-2">Je veux :</h1>
 
-    <div v-if="chooseAccount2" class="overflow-scroll h-64 mb-4">
+    <div v-if="chooseAccount2" class="overflow-scroll h-full max-h-64 mb-4 bg-gray-700 p-2 rounded-lg">
       <div class="flex flex-row hover:border hover:border-gray-500 rounded-lg py-2 px-2 hover:bg-gray-900"
            v-for="crypto in cryptos" v-on:click="() => {
               account2 = crypto
@@ -123,50 +123,59 @@ async function handleSubmitTrade() {
       </div>
     </div>
 
-    <div v-else-if="chooseAccount1">
-      <div class="flex flex-row justify-between hover:border hover:border-gray-500 rounded-lg py-2 px-2 hover:bg-gray-900"
-           v-for="crypto in userCryptos" v-on:click="() => {
-              account1 = crypto
-              chooseAccount1 = false
-      }">
-        <div class="flex flex-row gap-2">
-          <img class="w-8" v-if="crypto.type !== 'money'" :src="'https://assets.coincap.io/assets/icons/' + crypto.symbol.toLowerCase() + '@2x.png'"/>
-          <p>{{ crypto.name }}</p>
-        </div>
-        <div>
-          <p>{{crypto.amount}} {{ crypto.symbol }}</p>
-        </div>
-      </div>
-    </div>
-
     <div v-else>
-
-      <p v-if="!account2" class="bg-gray-700 rounded-lg py-2 px-4" v-on:click="chooseAccount2 = true">Choisissez ce que vous voulez</p>
-      <div v-else class="flex flex-row gap-2 bg-gray-700 rounded-lg p-2 text-gray-300" v-on:click="chooseAccount2 = true">
-        <img class="w-8" v-if="account2.type !== 'money'" :src="'https://assets.coincap.io/assets/icons/' + account2?.symbol.toLowerCase() + '@2x.png'"/>
+      <div v-if="account2" class="flex flex-row bg-gray-700 gap-2 rounded-lg p-2" v-on:click="chooseAccount2 = true">
+        <img class="w-8" v-if="account2?.type !== 'money'"
+             :src="'https://assets.coincap.io/assets/icons/' + account2?.symbol.toLowerCase() + '@2x.png'"/>
         <p>{{ account2?.name }}</p>
+      </div>
+      <div v-else>
+        <p v-if="!account2" class="bg-gray-700 rounded-lg py-2 px-4" v-on:click="chooseAccount2 = true">Choisissez ce que vous voulez</p>
       </div>
       <div class="space-y-3" v-if="account2 && account2">
         <p>Combien en voulez-vous ?</p>
         <input v-model="amount" class="bg-gray-700 rounded-lg p-2 text-gray-300" type="number" step="0.01" min="0">
       </div>
+    </div>
 
-      <h1 class="font-semibold my-2">En utilisant mon solde :</h1>
-      <p v-if="!account1" class="bg-gray-700 rounded-lg py-2 px-4" v-on:click="chooseAccount1 = true">Choisissez une cryptomonnaie</p>
-      <div v-else class="flex flex-row justify-between gap-2 bg-gray-700 rounded-lg p-2 text-gray-300 mb-2" v-on:click="chooseAccount1 = true">
+    <h1 class="font-semibold my-2">En utilisant mon solde :</h1>
+    <div v-if="chooseAccount1" class="overflow-scroll max-h-64 mb-4 bg-gray-700 p-2 rounded-lg">
+      <div
+          class="flex flex-row justify-between hover:border hover:border-gray-500 rounded-lg py-2 px-2 hover:bg-gray-900"
+          v-for="crypto in userCryptos" v-on:click="() => {
+          account1 = crypto
+          chooseAccount1 = false
+        }">
         <div class="flex flex-row gap-2">
-          <img v-if="account1.type !== 'money'" class="w-8" :src="'https://assets.coincap.io/assets/icons/' + account1?.symbol.toLowerCase() + '@2x.png'"/>
-          <p>{{ account1?.name }}</p>
+          <img class="w-8" v-if="crypto.type !== 'money'"
+               :src="'https://assets.coincap.io/assets/icons/' + crypto.symbol.toLowerCase() + '@2x.png'"/>
+          <p>{{ crypto.name }}</p>
         </div>
-        <p>{{account1.amount}} {{ account1.symbol }}</p>
       </div>
     </div>
+
+    <div v-else>
+      <p v-if="!account1" class="bg-gray-700 rounded-lg py-2 px-4" v-on:click="chooseAccount1 = true">Choisissez une
+        cryptomonnaie</p>
+      <div v-else class="flex flex-row justify-between gap-2 bg-gray-700 rounded-lg p-2 text-gray-300 mb-2"
+           v-on:click="chooseAccount1 = true">
+        <div class="flex flex-row gap-2">
+          <img v-if="account1.type !== 'money'" class="w-8"
+               :src="'https://assets.coincap.io/assets/icons/' + account1?.symbol.toLowerCase() + '@2x.png'"/>
+          <p>{{ account1?.name }}</p>
+        </div>
+        <p>{{ account1.amount }} {{ account1.symbol }}</p>
+      </div>
+    </div>
+
     <div v-if="account1 && account2">
       <h1>Récapitulatif</h1>
-      <p>{{ amount }} {{ account2?.symbol }} = {{ amountRequested }} {{ account1?.symbol }} = {{ account1?.priceUsd * amountRequested }}€</p>
+      <p>{{ amount }} {{ account2?.symbol }} = {{ amountRequested }} {{ account1?.symbol }} =
+        {{ account1?.priceUsd * amountRequested }}€</p>
       <p v-if="amountRequested > account1.amount">Vous n'avez pas assez pour pouvoir échanger</p>
     </div>
-    <button v-if="amountRequested <= account1?.amount" v-on:click="handleSubmitTrade()" class="px-3 py-1 mt-2 text-sm font-medium text-white bg-purple-600 border border-transparent rounded-md hover:bg-purple-700">
+    <button v-if="amountRequested <= account1?.amount" v-on:click="handleSubmitTrade()"
+            class="px-3 py-1 mt-2 text-sm font-medium text-white bg-purple-600 border border-transparent rounded-md hover:bg-purple-700">
       Echanger
     </button>
   </div>

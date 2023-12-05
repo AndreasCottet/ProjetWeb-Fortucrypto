@@ -8,6 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vueuse/core": "^10.7.0",
     "axios": "^1.6.1",
     "chart.js": "^4.4.0",
     "js-sha256": "^0.10.1",

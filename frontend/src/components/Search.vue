@@ -8,17 +8,17 @@
                         clip-rule="evenodd"></path>
                 </svg>
             </div>
-            <div
-                class="flex flex-row pl-8 py-2 text-sm border-0 rounded-md bg-gray-700 text-gray-200 focus:placeholder-gray-500 focus:outline-none">
+            <div class="flex flex-row pl-8 py-2 text-sm border-0 rounded-md bg-gray-700 text-gray-200 focus:placeholder-gray-500 focus:outline-none"
+                ref="target">
                 <input ref="search" v-model="ask" class="w-full bg-transparent focus:outline-none" type="text"
                     placeholder="Rechercher une cryptomonnaie ou une plateforme" aria-label="Search" />
-                <select v-model="type" class="bg-transparent focus:outline-none" @change="onChange($event)">
+                <select v-model="type" class="bg-transparent focus:outline-none">
                     <option value="coin" class="bg-gray-700"> Crypto </option>
                     <option value="exchange" class="bg-gray-700"> Exchange </option>
                 </select>
             </div>
         </div>
-        <div class="absolute z-10 w-full max-w-xl mt-10 overflow-y-auto bg-gray-700 rounded-md shadow-2xl max-h-96">
+        <div :class="{'absolute z-10 w-full max-w-xl mt-10 overflow-y-auto bg-gray-700 rounded-md shadow-2xl max-h-96': true, 'hidden': !showResult}">
             <ul>
                 <li v-for="item in res" :key="item.id" class="px-4 py-2 border-b border-gray-800 hover:bg-gray-800">
                     <router-link :to="`/${type}/${item.id}`">
@@ -38,6 +38,10 @@
 <script setup>
 import { onMounted, ref, computed } from 'vue';
 import { getCryptos, getExchanges } from '../api/api';
+import { onClickOutside } from '@vueuse/core'
+
+const target = ref(null)
+const showResult = ref(false)
 
 const cryptos = ref([]);
 const exchanges = ref([]);
@@ -45,16 +49,17 @@ const exchanges = ref([]);
 const type = ref('coin');
 const ask = ref('');
 const res = computed(() => {
-    console.log(ask)
-    let result = [];
-    if (type.value === 'coin' && ask.value !== '') {
-        result = cryptos.value.filter((crypto) => crypto.name.toLowerCase().includes(ask.value.toLowerCase()));
-    } else if (type.value === 'exchange' && ask.value !== '') {
-        result = exchanges.value.filter((exchange) => exchange.name.toLowerCase().includes(ask.value.toLowerCase()));
-    }
-    console.log(result);
-    return result;
+  let result = [];
+  if (type.value === 'coin' && ask.value !== '') {
+      result = cryptos.value.filter((crypto) => crypto.name.toLowerCase().includes(ask.value.toLowerCase()));
+  } else if (type.value === 'exchange' && ask.value !== '') {
+      result = exchanges.value.filter((exchange) => exchange.name.toLowerCase().includes(ask.value.toLowerCase()));
+  }
+  showResult.value = true;
+  return result;
 })
+
+onClickOutside(target, event => { showResult.value = false})
 
 onMounted(async () => {
     await getCryptos().then((res) => {
@@ -67,10 +72,5 @@ onMounted(async () => {
             exchange.id = exchange.exchangeId;
         })
     });
-
-    console.log(cryptos.value, exchanges.value);
-})
-function onChange(event) {
-    console.log(event);
-}
+});
 </script>
