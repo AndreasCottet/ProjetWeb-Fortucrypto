@@ -69,14 +69,13 @@ const labels = [{
 </script>
 
 <template>
-    <main class="container px-6 mx-auto grid">
+    <main class="px-6 mx-auto">
       <h2 class="my-6 text-2xl font-semibold text-gray-200">
         Portefeuille
       </h2>
-
       <div class="flex flex-row gap-6 mb-8">
-        <div class="flex flex-col px-10 py-6 rounded-lg shadow-xs bg-gray-800">
-          <div class="flex flex-row mb-4 gap-6">
+        <div class="flex flex-col px-10 py-6 rounded-lg justify-center items-center bg-gray-800 w-full">
+          <div class="flex flex-row mb-4 gap-6 ">
             <div class="p-3 mr-4 rounded-full text-white-100"
                  style="background-color: #a01bae">
               <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 22 22">
@@ -99,13 +98,13 @@ const labels = [{
             <button class="px-2 py-2 font-semibold rounded-full bg-red-700 text-red-100 w-32" v-on:click="router.push({name: 'ExchangeCoin'})">Vendre</button>
           </div>
         </div>
-        <div class="px-10 rounded-lg shadow-xs bg-gray-800">
-          <h1 class="font-bold text-lg py-4">Cryptomonnaie favorite</h1>
-          <div class="flex gap-6">
-            <img v-for="userCrypto in userCryptos" :src="userCrypto.img" class="w-10 h-10">
-          </div>
-          <h1 class="text-sm py-4">Ajouter des cryptomonnaie favorite</h1>
-        </div>
+<!--        <div class="px-10 rounded-lg shadow-xs bg-gray-800">-->
+<!--          <h1 class="font-bold text-lg py-4">Cryptomonnaie favorite</h1>-->
+<!--          <div class="flex gap-6">-->
+<!--            <img v-for="userCrypto in userCryptos" :src="userCrypto.img" class="w-10 h-10">-->
+<!--          </div>-->
+<!--          <h1 class="text-sm py-4">Ajouter des cryptomonnaie favorite</h1>-->
+<!--        </div>-->
       </div>
 
       <Liste :labels="labels" :data="values"/>
