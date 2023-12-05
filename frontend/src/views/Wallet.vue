@@ -1,13 +1,18 @@
 <script setup>
 import Liste from "../components/Liste.vue";
-import {getCrypto, getUserCrypto} from "../api/api";
+import {getCrypto, getUserCrypto, getUserMoney} from "../api/api";
 import {computed, onMounted, ref} from "vue";
 import {useStore} from "vuex";
+import {useRouter} from "vue-router";
+
+const router = useRouter();
 
 const store = useStore();
 const username = computed(() => store.getters.username);
 const userCryptos = ref([]);
 const values = ref([]);
+
+const userMoney = ref(0);
 
 const totalAmount = ref(null);
 
@@ -16,7 +21,7 @@ onMounted(async () => {
   userCryptos.value = response.data
 
   for await (const userCrypto of userCryptos.value) {
-    const res = await getCrypto(userCrypto.cryptoId);
+    let res = await getCrypto(userCrypto.cryptoId);
     let crypto = res.data.data
 
     crypto.amount = userCrypto.amount
@@ -28,6 +33,8 @@ onMounted(async () => {
 
     values.value.push(crypto)
   }
+
+  userMoney.value = await getUserMoney(username.value).then(res => res.data);
 });
 
 const labels = [{
@@ -66,10 +73,10 @@ const labels = [{
       <h2 class="my-6 text-2xl font-semibold text-gray-200">
         Portefeuille
       </h2>
-      <!-- Cards -->
+
       <div class="flex flex-row gap-6 mb-8">
         <div class="flex flex-col px-10 py-6 rounded-lg shadow-xs bg-gray-800">
-          <div class="flex flex-row mb-4">
+          <div class="flex flex-row mb-4 gap-6">
             <div class="p-3 mr-4 rounded-full text-white-100"
                  style="background-color: #a01bae">
               <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 22 22">
@@ -79,25 +86,23 @@ const labels = [{
               </svg>
             </div>
             <div>
-              <p class="mb-2 text-sm font-medium text-gray-400">Solde actuel</p>
-              <p class="text-lg font-bold text-gray-200">{{ parseFloat(totalAmount).toFixed(2) }}€</p>
+              <p class="mb-2 text-sm font-medium text-gray-400">Solde d'argent</p>
+              <p class="text-lg font-semibold text-gray-200">{{ userMoney }}€</p>
+            </div>
+            <div>
+              <p class="mb-2 text-sm font-medium text-gray-400">Solde de cryptomonnaies</p>
+              <p class="text-lg font-semibold text-gray-200">{{ parseFloat(totalAmount).toFixed(2) }}€</p>
             </div>
           </div>
           <div class="flex flex-row justify-center gap-6">
-            <button class="px-2 py-2 font-semibold rounded-full bg-green-700 text-green-100 w-32">Acheter</button>
-            <button class="px-2 py-2 font-semibold rounded-full bg-red-700 text-red-100 w-32">Vendre</button>
+            <button class="px-2 py-2 font-semibold rounded-full bg-green-700 text-green-100 w-32" v-on:click="router.push({name: 'ExchangeCoin'})">Acheter</button>
+            <button class="px-2 py-2 font-semibold rounded-full bg-red-700 text-red-100 w-32" v-on:click="router.push({name: 'ExchangeCoin'})">Vendre</button>
           </div>
         </div>
         <div class="px-10 rounded-lg shadow-xs bg-gray-800">
           <h1 class="font-bold text-lg py-4">Cryptomonnaie favorite</h1>
           <div class="flex gap-6">
             <img v-for="userCrypto in userCryptos" :src="userCrypto.img" class="w-10 h-10">
-<!--            <div class="p-10 rounded-lg shadow-xs bg-gray-800" style="background-color:#a01bae">-->
-<!--            </div>-->
-<!--            <div class=" p-10 rounded-lg shadow-xs bg-gray-800" style="background-color:#a01bae">-->
-<!--            </div>-->
-<!--            <div class=" p-10 rounded-lg shadow-xs bg-gray-800" style="background-color:#a01bae">-->
-<!--            </div>-->
           </div>
           <h1 class="text-sm py-4">Ajouter des cryptomonnaie favorite</h1>
         </div>
