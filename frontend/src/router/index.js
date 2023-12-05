@@ -48,7 +48,7 @@ const router = createRouter({
   ]
 })
 router.beforeEach((to, from, next) => {
-  const RestrictedPages = ['/wallet', '/convertir'];
+  const RestrictedPages = ['/wallet', '/exchangeCoin'];
   const authRequired = RestrictedPages.includes(to.path);
 
   if (authRequired && !store.state.loggedIn) {
