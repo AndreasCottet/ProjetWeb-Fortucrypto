@@ -31,7 +31,6 @@ export default {
 
   computed: {
     chartData() {
-      console.log(this.$props.chartValues)
       return {
         labels: this.$props.chartValues.labels,
         datasets: [
