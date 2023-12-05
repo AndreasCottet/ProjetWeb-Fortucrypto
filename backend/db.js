@@ -23,18 +23,6 @@ export const UserCryptos = sequelize.define('users_cryptos', {
     amount: { type: Sequelize.INTEGER },
 })
 
-
-export const UsersFavoritesCrypto = sequelize.define('users_favorites_crypto', {
-    cryptoId: { type: Sequelize.STRING },
-    userId: {
-        type: Sequelize.INTEGER,
-        references: {
-            model: User,
-            key: 'id'
-        }
-    },
-})
-
 export async function InitializeDb() {
     await sequelize.drop()
 

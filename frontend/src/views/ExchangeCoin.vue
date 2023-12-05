@@ -3,8 +3,10 @@ import {computed, onMounted, ref} from "vue";
 import router from "../router";
 import {useStore} from "vuex"
 import {getCrypto, getCryptos, getUserCrypto, getUserMoney, submitTrade} from "../api/api";
+import Loading from "../components/Loading.vue";
 
 const store = useStore()
+const isLoading = ref(true)
 
 const username = computed(() => store.getters.username)
 const cryptos = ref([])
@@ -44,7 +46,7 @@ async function getUserCryptos() {
     userCryptos.value[i].priceUsd = res.data.data.priceUsd
   }
 
-  userCryptos.value.push({
+  const argent = ({
     name: 'Mon argent',
     cryptoId: 'money',
     symbol: '€',
@@ -52,6 +54,8 @@ async function getUserCryptos() {
     amount: userMoney,
     type: 'money'
   })
+
+  userCryptos.value = [argent].concat(userCryptos.value)
 }
 
 onMounted(async () => {
@@ -63,13 +67,17 @@ onMounted(async () => {
   res = await getUserMoney(username.value)
   userMoney.value = res.data
 
-  cryptos.value.push({
+  const argent = ({
     id: 'money',
     name: 'Mon argent',
     priceUsd: 1,
     type: 'money',
-    symbol: '€',
+    symbol: '€'
   })
+
+  cryptos.value = [argent].concat(cryptos.value)
+
+  isLoading.value = false
 })
 
 async function handleSubmitTrade() {
@@ -106,13 +114,19 @@ async function handleSubmitTrade() {
 <template>
   <div class="bg-gray-800 rounded-lg py-4 px-4 mt-10 w-6/12 mx-auto">
     <h1 class="font-bold text-lg mb-6 text-center">Echanger ses cryptomonnaies</h1>
-    <p class="font-semibold text-base">Argent de mon compte : {{ userMoney }}€</p>
-    <p class="font-semibold text-base">Argent grâce aux cryptomonnaies : {{ userCryptoMoney.toFixed(2) }}€</p>
+    <div v-if="!isLoading">
+      <p class="font-semibold text-base">Argent sur mon compte : {{ userMoney }}€</p>
+      <p class="font-semibold text-base">Argent grâce aux cryptomonnaies : {{ userCryptoMoney.toFixed(2) }}€</p>
+    </div>
+    <div v-else class="mx-auto w-fit">
+      <Loading/>
+    </div>
     <br>
     <h1 class="font-semibold mb-2">Je veux :</h1>
 
     <div v-if="chooseAccount2" class="overflow-scroll h-full max-h-64 mb-4 bg-gray-700 p-2 rounded-lg">
-      <div class="flex flex-row hover:border hover:border-gray-500 rounded-lg py-2 px-2 hover:bg-gray-900"
+      <div v-if="isLoading" class="mx-auto w-fit"><Loading/></div>
+      <div v-else class="flex flex-row hover:border hover:border-gray-500 rounded-lg py-2 px-2 hover:bg-gray-900"
            v-for="crypto in cryptos" v-on:click="() => {
               account2 = crypto
               chooseAccount2 = false
@@ -140,7 +154,8 @@ async function handleSubmitTrade() {
 
     <h1 class="font-semibold my-2">En utilisant mon solde :</h1>
     <div v-if="chooseAccount1" class="overflow-scroll max-h-64 mb-4 bg-gray-700 p-2 rounded-lg">
-      <div
+      <div v-if="isLoading" class="mx-auto w-fit"><Loading/></div>
+      <div v-else
           class="flex flex-row justify-between hover:border hover:border-gray-500 rounded-lg py-2 px-2 hover:bg-gray-900"
           v-for="crypto in userCryptos" v-on:click="() => {
           account1 = crypto

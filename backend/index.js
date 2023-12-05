@@ -37,19 +37,6 @@ app.post('/register', async (req, res) => {
         return res.status(500).json({ message: err.message });
     }
 })
-// Partie favoris
-app.post('/favorite', (req, res) => {
-    const { cryptoId } = req.body
-    try {
-        User.findOne({
-            username: username,
-            password: password
-        })
-        res.status(200)
-    } catch (e) {
-        console.error(e)
-    }
-})
 
 app.get('/user/:username/cryptos', async (req, res) => {
     const { username } = req.params
@@ -152,14 +139,6 @@ app.get('/user/:username/money', async (req, res) => {
         res.status(500).send('Erreur serveur')
     }
 })
-
-// app.get('/favorite', async (req, res) => {
-//     // Favorite.findAll({
-//     //     where: {
-//     //         user:
-//     //     }
-//     // })
-// })
 
 InitializeDb().then(() => {
 
