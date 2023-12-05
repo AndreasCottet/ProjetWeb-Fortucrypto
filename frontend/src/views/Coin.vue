@@ -146,15 +146,18 @@ const chartDatas = computed(() => {
     return {
       values: [],
       labels: [],
+      changePercent24Hr: 0,
     }
   }
   let chartDatas = {
     values: [],
     labels: [],
+    changePercent24Hr: 0,
   }
   for (let i = 0; i < coinHistory.value.length; i++) {
     chartDatas.labels.push(new Date(coinHistory.value[i].time).getHours())
     chartDatas.values.push(parseFloat(coinHistory.value[i].priceUsd))
+    chartDatas.changePercent24Hr = coin.value.changePercent24Hr
   }
 
   return chartDatas
@@ -167,22 +170,6 @@ const img = computed(() => {
   return '';
 })
 
-let dataChart = computed(() => {
-  if (chartDatas.value.length === 0) {
-    return {}
-  }
-  return {
-    labels: chartDatas.value,
-    datasets: [
-      {
-        label: '$',
-        data: chartDatas,
-        fill: false,
-        borderColor: '#f87979'
-      }
-    ]
-  }
-})
 
 function kFormatter(num) {
   if (num / 1000000000 > 1) {
