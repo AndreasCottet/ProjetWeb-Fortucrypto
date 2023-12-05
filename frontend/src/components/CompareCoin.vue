@@ -77,7 +77,7 @@ onMounted(async () => {
           {{ parseFloat(crypto2Res).toFixed(2) }} {{ crypto2?.symbol }}</p>
       </div>
     </div>
-    <button class="px-3 py-1 text-sm font-medium text-white bg-purple-600 border border-transparent rounded-md hover:bg-purple-700" v-on:click="router.push({name: 'Convertir'})">
+    <button class="px-3 py-1 text-sm font-medium text-white bg-purple-600 border border-transparent rounded-md hover:bg-purple-700 mt-2" v-on:click="router.push({name: 'Convertir'})">
       Acheter des cryptomonnaie
     </button>
   </div>

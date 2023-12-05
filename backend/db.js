@@ -9,6 +9,7 @@ export const User = sequelize.define('user', {
     email: { type: Sequelize.STRING, allowNull: false, unique: true, validate: { isEmail: true } },
     firstname: { type: Sequelize.STRING, allowNull: false },
     lastname: { type: Sequelize.STRING, allowNull: false},
+    money: {type: Sequelize.INTEGER, allowNull: false, defaultValue: 100000 },
 })
 
 export const UserCryptos = sequelize.define('users_cryptos', {
@@ -74,5 +75,4 @@ export async function InitializeDb() {
     });
 
     // Favorite.sync({ force: true }).then(() => console.log('Table favoris créée'));
-    // Crypto.sync({ force: true }).then(() => console.log('Table crypto créée'));
 }

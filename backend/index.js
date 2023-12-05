@@ -4,6 +4,7 @@ import express from 'express';
 
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import axios from "axios";
 import {where} from "sequelize";
 
 // import faker from 'faker';
@@ -74,6 +75,91 @@ app.get('/user/:username/cryptos', async (req, res) => {
         }
     } catch (err) {
         return res.status(500).json({ message: err.message });
+    }
+})
+
+app.post('/user/:username/trade', async (req, res) => {
+    const { username } = req.params
+    const { cryptoId, amount, cryptoIdToExchange } = req.body
+
+    if(!cryptoId || !amount || !cryptoIdToExchange){
+        return res.status(400).send('Requête incomplète')
+    }
+
+    if(cryptoId === cryptoIdToExchange){
+        return res.status(400).send('Vous ne pouvez pas échanger la même cryptomonnaie')
+    }
+
+    console.log(req.body)
+
+    try {
+        const user = await User.findOne({ where: { username: username } });
+
+        let resCryptos;
+        let cryptoIWant;
+        if (cryptoId === 'money') {
+            cryptoIWant = { priceUsd: 1 }
+        } else {
+            resCryptos = await axios.get('https://api.coincap.io/v2' + '/assets/' + cryptoId)
+            cryptoIWant = resCryptos.data.data
+        }
+
+        let userCryptoToExchange;
+        let cryptoToExchange;
+        if (cryptoIdToExchange === 'money') {
+            userCryptoToExchange = { amount: user.money }
+            cryptoToExchange = { priceUsd: 1 }
+        } else {
+            const userCryptos = await UserCryptos.findAll({where: {userId: user.id}});
+            userCryptoToExchange = userCryptos.find(c => c.cryptoId === cryptoIdToExchange)
+
+            resCryptos = await axios.get('https://api.coincap.io/v2' + '/assets/' + cryptoIdToExchange)
+            cryptoToExchange = resCryptos.data.data
+        }
+
+        const amountCryptoIHaveRequested = amount * cryptoIWant.priceUsd / cryptoToExchange.priceUsd
+
+        if (amountCryptoIHaveRequested > userCryptoToExchange.amount) {
+            res.status(400).send('Pas assez de ' + cryptoIdToExchange.name + ' pour effectuer la transaction');
+        }
+
+        if(cryptoId === 'money') {
+            user.money += amount
+            user.save()
+        } else {
+            const userCrypto = await UserCryptos.findOne({where: {userId: user.id, cryptoId: cryptoId}})
+            if(userCrypto) {
+                userCrypto.amount += amount
+                await userCrypto.save()
+            } else {
+                await UserCryptos.create({
+                    userId: user.id,
+                    cryptoId: cryptoId,
+                    amount: amount
+                })
+            }
+        }
+
+        if(cryptoIdToExchange === 'money') {
+            user.money -= amountCryptoIHaveRequested
+        } else {
+            userCryptoToExchange.amount -= amountCryptoIHaveRequested
+            await userCryptoToExchange.save()
+        }
+
+        res.status(200).send('Transaction effectuée');
+    } catch (e) {
+        console.error(e)
+    }
+})
+
+app.get('/user/:username/money', async (req, res) => {
+    const { username } = req.params
+    try {
+        const user = await User.findOne({where: { username: username }})
+        res.status(200).json(user.money)
+    } catch (e) {
+        res.status(500).send('Erreur serveur')
     }
 })
 

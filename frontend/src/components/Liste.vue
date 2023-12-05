@@ -91,6 +91,9 @@
       </span>
     </div>
   </div>
+  <div v-else class="text-center">
+    <h1>Chargement ...</h1>
+  </div>
 </template>
 <script setup>
 
@@ -124,10 +127,5 @@ function kFormatter(num) {
     return num;
   }
 }
-
-function updateCrypto(idCrypto, isUp) {
-
-}
-
 
 </script>
