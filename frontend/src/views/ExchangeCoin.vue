@@ -20,6 +20,7 @@ const chooseAccount1 = ref(false)
 const chooseAccount2 = ref(false)
 
 const amount = ref(0)
+const loadingTrade = ref(false)
 
 const amountRequested = computed(() => {
   return (account2.value?.priceUsd * amount.value) / account1.value?.priceUsd
@@ -113,7 +114,9 @@ async function handleSubmitTrade() {
   }
 
   try {
+    loadingTrade.value = true
     let res = await submitTrade(username.value, trade)
+
     if (res.status === 200) {
       tradeMessage.value.isActive = true
       tradeMessage.value.type = 'success'
@@ -123,13 +126,17 @@ async function handleSubmitTrade() {
   } catch (e) {
     console.error(e)
   }
+  loadingTrade.value = false
 }
 
 
 </script>
 
 <template>
-  <div v-if="tradeMessage.isActive" :class="{'bg-gray-800 w-6/12 mx-auto px-4 py-2 rounded-lg': true, 'bg-green-700 text-green-700': tradeMessage.type === 'success', 'bg-red-400': tradeMessage.type === 'error'}">{{ tradeMessage.message }}</div>
+  <div v-if="tradeMessage.isActive" :class="{'bg-gray-800 w-6/12 mx-auto px-4 py-2 rounded-lg flex flex-row justify-between': true, 'bg-green-500 text-green-700 border-2 border-green-700 font-bold': tradeMessage.type === 'success', 'bg-red-300 text-red-700 border-4 border-red-700 font-bold': tradeMessage.type === 'error'}">
+    <p>{{ tradeMessage.message }}</p>
+    <svg v-on:click="tradeMessage.isActive = false" :class="{'w-4': true, 'fill-green-700': tradeMessage.type === 'success', 'fill-red-700': tradeMessage.type === 'error' }" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 490 490" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <polygon points="456.851,0 245,212.564 33.149,0 0.708,32.337 212.669,245.004 0.708,457.678 33.149,490 245,277.443 456.851,490 489.292,457.678 277.331,245.004 489.292,32.337 "></polygon> </g></svg>
+  </div>
 
   <div class="bg-gray-800 rounded-lg py-4 px-4 mt-4 w-6/12 mx-auto">
     <h1 class="font-bold text-lg mb-6 text-center">Echanger ses cryptomonnaies</h1>
@@ -208,9 +215,11 @@ async function handleSubmitTrade() {
         {{ account1?.priceUsd * amountRequested }}€</p>
       <p v-if="amountRequested > account1.amount">Vous n'avez pas assez pour pouvoir échanger</p>
     </div>
+    <div class="flex flex-row gap-10 mt-4">
     <button v-if="amountRequested <= account1?.amount" v-on:click="handleSubmitTrade()"
             class="px-3 py-1 mt-2 text-sm font-medium text-white bg-purple-600 border border-transparent rounded-md hover:bg-purple-700">
       Echanger
-    </button>
+    </button><Loading v-if="loadingTrade"/>
+    </div>
   </div>
 </template>
