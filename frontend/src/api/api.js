@@ -51,3 +51,11 @@ export async function getExchangeById(exchangeId) {
 export async function getUserCrypto(username) {
     return await axios.get(API_URL + '/user/' + username + '/cryptos')
 }
+
+export async function submitTrade(username, trade) {
+    return await axios.post(API_URL + '/user/' + username + '/trade', trade)
+}
+
+export async function getUserMoney(username) {
+    return await axios.get(API_URL + '/user/' + username + '/money')
+}

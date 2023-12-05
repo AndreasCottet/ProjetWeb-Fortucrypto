@@ -14,10 +14,10 @@
     </div>
 
     <label class="mb-1 font-light">Email</label>
-    <input type="text" placeholder="Michel@gmail.com" class="w-96 bg-gray-500 rounded-lg px-4 py-2 mb-4" v-model="form.email">
+    <input type="text" placeholder="Michel@gmail.com" class="w-96 bg-gray-500 rounded-lg px-4 py-2 mb-4 focus:outline-none" v-model="form.email">
 
     <label class="mb-1 font-light">Nom d'utilisateur</label>
-    <input type="text" placeholder="Michel Michel" class="w-96 bg-gray-500 rounded-lg px-4 py-2 mb-4" v-model="form.username">
+    <input type="text" placeholder="Michel Michel" class="w-96 bg-gray-500 rounded-lg px-4 py-2 mb-4 focus:outline-none" v-model="form.username">
 
     <label class="mb-1 font-light">Mot de passe</label>
     <input type="password" placeholder="*************" class="w-96 bg-gray-500 rounded-lg px-4 py-2 mb-12" v-model="form.password">

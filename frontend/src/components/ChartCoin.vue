@@ -37,7 +37,7 @@ export default {
             label: 'Prix (€)',
             data: this.$props.chartValues.values,
             fill: false,
-            borderColor: '#f87979'
+            borderColor: this.$props.chartValues.fluctuation < 0 ? '#ffffff': '#eeeeee'
           }
         ]
       }
