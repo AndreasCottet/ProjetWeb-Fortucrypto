@@ -119,6 +119,7 @@ app.post('/user/:username/trade', async (req, res) => {
 
         if(cryptoIdToExchange === 'money') {
             user.money -= amountCryptoIHaveRequested
+            user.save()
         } else {
             userCryptoToExchange.amount -= amountCryptoIHaveRequested
             await userCryptoToExchange.save()
