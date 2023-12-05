@@ -25,6 +25,12 @@ const amountRequested = computed(() => {
   return (account2.value?.priceUsd * amount.value) / account1.value?.priceUsd
 })
 
+const tradeMessage = ref({
+  isActive: false,
+  message: '',
+  type: ''
+})
+
 const userCryptoMoney = computed(() => {
   let total = 0
   for (const crypto of userCryptos.value) {
@@ -59,6 +65,11 @@ async function getUserCryptos() {
 }
 
 onMounted(async () => {
+  await onCryptoChange()
+})
+
+async function onCryptoChange() {
+  isLoading.value = true
   await getUserCryptos()
 
   let res = await getCryptos()
@@ -78,16 +89,21 @@ onMounted(async () => {
   cryptos.value = [argent].concat(cryptos.value)
 
   isLoading.value = false
-})
+}
 
 async function handleSubmitTrade() {
   if (amountRequested.value > account1.value.amount) {
-    alert('Vous n\'avez pas assez de ' + account1.value.symbol)
+    tradeMessage.value.isActive = true
+    tradeMessage.value.type = 'error'
+    tradeMessage.value.message = 'Vous n\'avez pas assez de ' + account1.value.symbol
     return
   }
 
   if (account1.value.name === account2.value.name) {
-    alert('Vous ne pouvez pas échanger la même cryptomonnaie')
+    tradeMessage.value.isActive = true
+    tradeMessage.value.type = 'error'
+    tradeMessage.value.message = 'Vous ne pouvez pas échanger la même cryptomonnaie'
+    return
   }
 
   let trade = {
@@ -99,11 +115,12 @@ async function handleSubmitTrade() {
   try {
     let res = await submitTrade(username.value, trade)
     if (res.status === 200) {
-      alert("Transaction effectuée avec succès")
-      router.push({name: 'Accueil'})
+      tradeMessage.value.isActive = true
+      tradeMessage.value.type = 'success'
+      tradeMessage.value.message = 'Echange réalisé avec succès'
+      await onCryptoChange()
     }
   } catch (e) {
-    alert('Une erreur est survenue');
     console.error(e)
   }
 }
@@ -112,7 +129,9 @@ async function handleSubmitTrade() {
 </script>
 
 <template>
-  <div class="bg-gray-800 rounded-lg py-4 px-4 mt-10 w-6/12 mx-auto">
+  <div v-if="tradeMessage.isActive" :class="{'bg-gray-800 w-6/12 mx-auto px-4 py-2 rounded-lg': true, 'bg-green-700 text-green-700': tradeMessage.type === 'success', 'bg-red-400': tradeMessage.type === 'error'}">{{ tradeMessage.message }}</div>
+
+  <div class="bg-gray-800 rounded-lg py-4 px-4 mt-4 w-6/12 mx-auto">
     <h1 class="font-bold text-lg mb-6 text-center">Echanger ses cryptomonnaies</h1>
     <div v-if="!isLoading">
       <p class="font-semibold text-base">Argent sur mon compte : {{ userMoney }}€</p>
