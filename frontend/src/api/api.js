@@ -4,8 +4,8 @@ const API_URL = 'http://localhost:3000'
 const API_CRYPTO_URL = 'https://api.coincap.io/v2'
 
 
-export async function login(username, password) {
-    return await axios.post(API_URL + '/login', {})
+export async function login(username, hashedPassword) {
+    return await axios.post(API_URL + '/login', {username, hashedPassword})
 }
 
 export async function getCryptos() {

@@ -14,7 +14,7 @@ const values = ref([]);
 
 const userMoney = ref(0);
 
-const totalAmount = ref(null);
+const totalAmount = ref(0);
 
 onMounted(async () => {
   const response = await getUserCrypto(username.value);
@@ -107,7 +107,8 @@ const labels = [{
           <h1 class="text-sm py-4">Ajouter des cryptomonnaie favorite</h1>
         </div>
       </div>
-      <Liste :labels="labels" :data="values">
-      </Liste>
+
+      <Liste :labels="labels" :data="values"/>
+
   </main>
 </template>

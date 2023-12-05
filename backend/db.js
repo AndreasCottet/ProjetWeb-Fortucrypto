@@ -1,6 +1,5 @@
 import { Sequelize } from "sequelize";
 
-// Connexion à la base de donnée avec Sequelize
 const sequelize = new Sequelize('sqlite:database-fortucrypto.db');
 
 export const User = sequelize.define('user', {
@@ -73,6 +72,4 @@ export async function InitializeDb() {
             lastname:'Lemon',
         });
     });
-
-    // Favorite.sync({ force: true }).then(() => console.log('Table favoris créée'));
 }

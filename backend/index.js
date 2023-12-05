@@ -5,21 +5,11 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import axios from "axios";
-import {where} from "sequelize";
 
-// import faker from 'faker';
-
-// Initialisation serveur
 const app = express();
-// Sécurité
 app.use(cors());
-// Configuration parser body
 app.use(bodyParser.json());
 
-// Configuration Faker
-// faker.locale = 'fr';
-
-// Partie utilisateur
 app.post('/login', async (req, res) => {
     const { username, hashedPassword: password } = req.body
 

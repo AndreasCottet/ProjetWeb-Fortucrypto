@@ -5,7 +5,7 @@
       <div class="flex flex-col flex-1 w-full">
         <Header />
         <div class="p-6 dark:text-white">
-          <RouterView :key="$route.url"/>
+          <RouterView :key="$route.path"/>
         </div>
       </div>
     </div>

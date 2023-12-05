@@ -52,4 +52,3 @@ const pages = ref([
   },
 ]);
 </script>
-<style></style>
