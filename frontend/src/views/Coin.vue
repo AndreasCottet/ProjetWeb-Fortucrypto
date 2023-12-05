@@ -49,7 +49,7 @@
         <CompareCoin />
       </div>
     </div>
-    <ListeCoin />
+    <ListeCoin :crypto-id="cryptoId" />
   </div>
 </template>
 
@@ -61,13 +61,13 @@ import router from "../router";
 import ListeCoin from "../components/ListeCoin.vue";
 import {useStore} from "vuex";
 import CompareCoin from "../components/CompareCoin.vue";
+import {kFormatter} from "../scripts/tools";
 
 const store = useStore()
 
 const userCryptos = ref([])
-const showOtherCrypto = ref(false)
 
-const id = router.currentRoute.value.params.id
+const cryptoId = router.currentRoute.value.params.id
 
 const coin = ref(null)
 const coinHistory = ref(null)
@@ -76,13 +76,12 @@ let startDate = new Date()
 let todayDate = new Date()
 startDate.setDate(startDate.getDate() - 1);
 
-const loggedIn = computed(() => store.getters.loggedIn);
 const username = computed(() => store.getters.username)
 
 onMounted(async () => {
-  const res = await getCrypto(id)
+  const res = await getCrypto(cryptoId)
   coin.value = res.data.data
-  const resHistory = await getCryptoHistory(id, startDate.getTime(), todayDate.getTime())
+  const resHistory = await getCryptoHistory(cryptoId, startDate.getTime(), todayDate.getTime())
   coinHistory.value = resHistory.data.data
 
   const resUserCrypto = await getUserCrypto(username.value)
@@ -101,7 +100,6 @@ onMounted(async () => {
     i++
   }
 
-  console.log(userCryptos)
 })
 
 const minPrice = computed(() => {
@@ -169,18 +167,5 @@ const img = computed(() => {
   }
   return '';
 })
-
-
-function kFormatter(num) {
-  if (num / 1000000000 > 1) {
-    return (num / 1000000000).toFixed(2) + 'B';
-  } else if (num / 1000000 > 1) {
-    return (num / 1000000).toFixed(2) + 'M';
-  } else if (num / 1000 > 1) {
-    return (num / 1000).toFixed(2) + 'K';
-  } else {
-    return num;
-  }
-}
 
 </script>

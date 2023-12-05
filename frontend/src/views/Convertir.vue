@@ -61,7 +61,6 @@ onMounted(async () => {
   cryptos.value = res.data.data
 
   res = await getUserMoney(username.value)
-  console.log(res.data)
   userMoney.value = res.data
 
   cryptos.value.push({

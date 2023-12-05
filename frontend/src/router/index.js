@@ -37,8 +37,8 @@ const router = createRouter({
       name: 'Coin',
       component: Coin,
     }, {
-      path: '/convertir',
-      name: 'Convertir',
+      path: '/exchangeCoin',
+      name: 'ExchangeCoin',
       component: Convertir
     }, {
       path: '/wallet',

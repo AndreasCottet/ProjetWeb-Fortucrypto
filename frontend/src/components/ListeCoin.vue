@@ -1,16 +1,16 @@
 <script setup>
 import {onMounted, ref} from "vue";
-import router from "../router";
 import {getExchangeById, getMarketByCryptoId} from "../api/api";
 import Liste from "./Liste.vue";
 
-const id = router.currentRoute.value.params.id
+const props = defineProps(['cryptoId'])
+const cryptoId = props.cryptoId
+
 const markets = ref([])
-const marketsName = ref({})
 const labels = ref([])
 
 onMounted(async () => {
-  let res = await getMarketByCryptoId(id)
+  let res = await getMarketByCryptoId(cryptoId)
 
   markets.value = res.data.data
   const sumVolumeCoin = markets.value.reduce((a, b) => {
@@ -25,31 +25,20 @@ onMounted(async () => {
     return market.volumeUsd24Hr && market.percentExchangeVolume
   })
 
+  let marketsName = {}
+
   markets.value.forEach((market) => {
-    if (!marketsName.value.hasOwnProperty(market.exchangeId)) {
+    if (!marketsName.hasOwnProperty(market.exchangeId)) {
       getExchangeById(market.exchangeId).then((res) => {
         return res.data.data
       }).then((exchange) => {
-        marketsName.value[market.exchangeId] = exchange.name
+        marketsName[market.exchangeId] = exchange.name
         market.name = exchange.name
         market.volumePercent = (market.volumeUsd24Hr / sumVolumeCoin) * 100
       })
     }
   })
 })
-
-function kFormatter(num) {
-  if (num / 1000000000 > 1) {
-    return (num / 1000000000).toFixed(2) + 'B';
-  } else if (num / 1000000 > 1) {
-    return (num / 1000000).toFixed(2) + 'M';
-  } else if (num / 1000 > 1) {
-    return (num / 1000).toFixed(2) + 'K';
-  } else {
-    return num;
-  }
-}
-
 
 labels.value = [
   {
@@ -89,7 +78,3 @@ labels.value = [
     </Liste>
   </div>
 </template>
-
-<style scoped>
-
-</style>

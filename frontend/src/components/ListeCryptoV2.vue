@@ -58,36 +58,35 @@ labels.value = [
 ]
 
 onMounted(async () => {
-  let res = await getCryptos()
+  const res = await getCryptos()
   cryptos.value = res.data.data
   cryptos.value.forEach((crypto) => {
     crypto.img = 'https://assets.coincap.io/assets/icons/' + crypto.symbol.toLowerCase() + '@2x.png'
   })
 })
 
-
 const pricesWs = new WebSocket('wss://ws.coincap.io/prices?assets=ALL')
 
 pricesWs.onmessage = function (msg) {
-  let data = JSON.parse(msg.data)
+  const data = JSON.parse(msg.data)
   for (const [key, value] of Object.entries(data)) {
     cryptos.value.forEach((crypto) => {
-      if (crypto.id === key) {
-
-        if (value > crypto.priceUsd) {
-          crypto.update = 'up'
-        } else {
-          crypto.update = 'down'
-        }
-
-        crypto.priceUsd = value
-
-        setTimeout(() => {
-          crypto.update = ''
-        }, 700)
+      if (crypto.id !== key) {
+        return;
       }
+
+      if (value > crypto.priceUsd) {
+        crypto.update = 'up'
+      } else {
+        crypto.update = 'down'
+      }
+
+      crypto.priceUsd = value
+
+      setTimeout(() => {
+        crypto.update = false
+      }, 700)
     })
   }
-  console.log(data);
 }
 </script>

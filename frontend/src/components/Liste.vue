@@ -44,6 +44,7 @@
           <ul class="inline-flex items-center" v-if="data.length > 1">
             <li>
               <button
+                  v-on:click="() => { if(0 < (currentPage)) { currentPage--}}"
                   class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple"
                   aria-label="Previous"
               >
@@ -69,7 +70,7 @@
                   </button>
                 </li>
             <li>
-              <button
+              <button v-on:click="() => { if((currentPage) < nbrPages - 1) { currentPage++}}"
                   class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple"
                   aria-label="Next"
               >
@@ -98,6 +99,7 @@
 <script setup>
 
 import {computed, ref} from "vue";
+import {kFormatter} from "../scripts/tools";
 
 const props = defineProps(
     {
@@ -115,17 +117,5 @@ const nbrPages = computed(() => {
   }
   return nbrPages
 })
-
-function kFormatter(num) {
-  if (num / 1000000000 > 1) {
-    return (num / 1000000000).toFixed(2) + 'B';
-  } else if (num / 1000000 > 1) {
-    return (num / 1000000).toFixed(2) + 'M';
-  } else if (num / 1000 > 1) {
-    return (num / 1000).toFixed(2) + 'K';
-  } else {
-    return num;
-  }
-}
 
 </script>

@@ -18,7 +18,6 @@ let convertedAmount = computed(() => {
 onMounted(async () => {
   const res = await getCryptos()
   cryptos.value = res.data.data
-  console.log(cryptos)
 })
 
 

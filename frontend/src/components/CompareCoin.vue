@@ -14,6 +14,7 @@ const crypto2Res = computed(() => {
   }
   return cryptoAmount.value * crypto1.value.priceUsd / crypto2.value.priceUsd
 })
+
 const chooseCrypto1 = ref(false)
 const chooseCrypto2 = ref(false)
 
@@ -39,8 +40,7 @@ onMounted(async () => {
               chooseCrypto2 = false
             }
          }">
-        <img class="w-8 mr-2"
-             :src="'https://assets.coincap.io/assets/icons/' + crypto.symbol.toLowerCase() + '@2x.png'"/>
+        <img class="w-8 mr-2" :src="'https://assets.coincap.io/assets/icons/' + crypto.symbol.toLowerCase() + '@2x.png'"/>
         <p>{{ crypto.name }}</p>
       </div>
     </div>
@@ -48,17 +48,14 @@ onMounted(async () => {
     <div v-else>
       <p v-if="!crypto1" class="bg-gray-700 rounded-lg py-2 px-4" v-on:click="chooseCrypto1 = true">Choisissez une
         cryptomonnaie</p>
-      <div v-else class="flex flex-row gap-2 bg-gray-700 rounded-lg p-2 text-gray-300 mb-2"
-           v-on:click="chooseCrypto1 = true">
-        <div class="flex flex-row gap-2">
+      <div v-else class="flex flex-row gap-2 bg-gray-700 rounded-lg p-2 text-gray-300 mb-2" v-on:click="chooseCrypto1 = true">
           <img class="w-8"
                :src="'https://assets.coincap.io/assets/icons/' + crypto1?.symbol.toLowerCase() + '@2x.png'"/>
           <p>{{ crypto1?.name }}</p>
-        </div>
       </div>
       <div class="flex flex-row items-center justify-between bg-gray-700 rounded-lg px-2" v-if="crypto1 && crypto2">
-        <input type="number" min="0" required
-               class="bg-transparent bg-gray-700 rounded-lg p-2 text-gray-300 text-base p-1 w-full"
+        <input type="number" min="0" required step="0.01"
+               class="bg-transparent rounded-lg p-2 text-gray-300 text-base p-1 w-full"
                v-model="cryptoAmount">
         <p>{{ crypto1?.symbol }}</p>
       </div>
@@ -73,16 +70,11 @@ onMounted(async () => {
         <p>{{ crypto2?.name }}</p>
       </div>
       <div class="flex flex-row" v-if="crypto1 && crypto2">
-        <p class="bg-transparent bg-gray-700 rounded-lg p-2 text-gray-300 items-center justify-center">
-          {{ parseFloat(crypto2Res).toFixed(2) }} {{ crypto2?.symbol }}</p>
+        <p class="rounded-lg p-2 text-gray-300 items-center justify-center">{{ parseFloat(crypto2Res).toFixed(2) }} {{ crypto2?.symbol }}</p>
       </div>
     </div>
-    <button class="px-3 py-1 text-sm font-medium text-white bg-purple-600 border border-transparent rounded-md hover:bg-purple-700 mt-2" v-on:click="router.push({name: 'Convertir'})">
-      Acheter des cryptomonnaie
+    <button class="px-3 py-1 text-sm font-semibold text-white bg-purple-600 rounded-md hover:bg-purple-700 mt-2" v-on:click="router.push({name: 'ExchangeCoin'})">
+      Acheter des cryptomonnaies
     </button>
   </div>
 </template>
-
-<style scoped>
-
-</style>
