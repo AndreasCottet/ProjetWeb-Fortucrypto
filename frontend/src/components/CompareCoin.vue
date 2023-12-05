@@ -1,7 +1,6 @@
 <script setup>
 import {computed, onMounted, ref} from "vue";
 import {getCryptos} from "../api/api";
-import Convertir from "../views/Convertir.vue";
 import router from "../router";
 
 const cryptoAmount = ref(0)

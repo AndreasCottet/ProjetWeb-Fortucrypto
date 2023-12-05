@@ -6,7 +6,6 @@ import Register from "../views/Register.vue";
 import PlatformsExchanges from "../views/PlatformsExchanges.vue";
 import Exchange from "../views/Exchange.vue";
 import Coin from "../views/Coin.vue";
-import Convertir from "../views/Convertir.vue";
 import Wallet from "../views/Wallet.vue";
 import ExchangeCoin from "../views/ExchangeCoin.vue";
 
